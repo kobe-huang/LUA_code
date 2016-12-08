@@ -20,7 +20,7 @@ print("language:",_a2["lang"])
 
 
 -- 关注函数及__index
-setmetatable(_a2, {__index = _a1})
+setmetatable(_a2, {__inedx = _a1})
 
 
 print("\nthe new table _a2:")
