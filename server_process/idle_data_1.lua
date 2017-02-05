@@ -1,0 +1,1 @@
+sl_idle_time = 7000
