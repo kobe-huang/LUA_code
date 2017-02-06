@@ -1,12 +1,11 @@
 --用来将文件打包 package--
 local package_name = "sl_main.lua"
 local package_file_list = {
-  "../closer_demo/test_inherit.lua",
-  "./dir_test/kobe_test.lua",
-  "JSON.lua",
-  "misc.lua",
-  "file_log.lua",
-  "server.lua", 
+  "./lib/lib_JSON.lua",
+  "./misc/ms_info.lua",
+  "./misc/file_log.lua",
+  "./class/class_server.lua", 
+  "./class/class_ms.lua",
   "main.lua"               
 }
 

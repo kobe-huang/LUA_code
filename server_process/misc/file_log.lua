@@ -3,7 +3,8 @@ require "string"
 function stripfilename(filename)
     return string.match(filename, "(.+)/[^/]*%.%w+$") --*nix system  
     --return string.match(filename, “(.+)\\[^\\]*%.%w+$”) — windows  
-end    
+end  
+
 --获取文件名  
 function strippath(filename)  
     return string.match(filename, ".+/([^/]*%.%w+)$") -- *nix system  
@@ -78,10 +79,10 @@ function writeStrToFile(mystring, file)
 end
 
 --初始化log文件
-function logFileInit(log_file_name)   
+function logFileInit()   
     rightnow_data = os.date("%Y%m%d");   --得到当前日期和时间
     rightnow_time = os.date("%H:%M:%S");
-    local file_path = stripfilename(log_file_name)
+    local file_path = stripfilename(sl_log_file)
     if false == file_exists(file_path) then  --创建自己的临时文件夹
           os.execute("mkdir -p " .. file_path);
     end

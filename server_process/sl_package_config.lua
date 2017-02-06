@@ -7,9 +7,10 @@ local sl_globle_para = {
 }
 
 is_delete_contact = false;
-sl_log_file = "/private/var/touchelf/scripts/sl/sl_log.txt" --配置文件
---end sl_package_config.lua
-g_sl_account = "kobe"
-g_sl_password = "H11111111h"
+sl_log_file    = "/private/var/touchelf/scripts/sl/sl_log.txt" --log文件
+g_sl_account   = "kobe"
+g_sl_password  = "H11111111h"
+sl_fix_path    = "/private/var/touchelf/scripts/sl/"   
+sl_config_file = "/private/var/touchelf/scripts/sl/sl_config.txt" --配置文件
 
 
