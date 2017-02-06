@@ -1429,7 +1429,7 @@ function OBJDEF:new(args)
    return setmetatable(new, OBJDEF)
 end
 
-return OBJDEF:new()
+--return OBJDEF:new()
 
 --
 -- Version history:

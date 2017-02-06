@@ -10,12 +10,6 @@ function strippath(filename)
     --return string.match(filename, “.+\\([^\\]*%.%w+)$”) — *nix system  
 end  
 
---[[
-local test_file = "http://oss.techouol.com/images/2/2016/12/YHLhGDDh0IGtSc30IE7i7TLC931T1d.jpg"
-print(stripfilename(test_file))
-print(strippath(test_file))
---]]
-  
 --去除扩展名  
 function stripextension(filename)  
     local idx = filename:match(".+()%.%w+$")  
@@ -93,5 +87,31 @@ function logFileInit(log_file_name)
     end
     writeStrToFile(rightnow_data .. " " .. rightnow_time .. "   ++++begin+++", log_file_name); 
 end
-
 --function LogToFile
+
+--得到本机当前时间
+function get_local_time()
+    local rightnow_data = os.date("%Y%m%d");   --得到当前日期和时间
+    local rightnow_time = os.date("%H:%M:%S");
+    local my_time = rightnow_data .. ": " .. rightnow_time .. ": "
+    return my_time;
+end 
+
+--输出错误信息到文件
+function error_info(out_info)  ---错误处理函数   
+    local time = get_local_time(); 
+    writeStrToFile("error:  " .. time .. out_info , sl_log_file); 
+    notifyMessage(out_info);   
+    keyDown('HOME');    -- HOME键按下
+    mSleep(100);        --延时100毫秒
+    keyUp('HOME');      -- HOME键抬起
+    mSleep(5000);
+    os.exit(1);
+end
+
+--输出信息到文件
+function log_info(out_info)  ---错误处理函数   
+    --notifyMessage(out_info);
+    local time = get_local_time(); 
+    writeStrToFile("info:  " .. time .. out_info , sl_log_file);    
+end

@@ -1,16 +1,13 @@
 --用来将文件打包 package--
-local  package_name = "sl_main.lua"
+local package_name = "sl_main.lua"
 local package_file_list = {
-  "sl_package_config.lua",
-  "lib_file_log.lua",
-  "class_base_page.lua", 
-  "page_all_data.lua",                    
-  "page_main.lua",             
-  "page_suoyoulianxiren_del.lua",  
-  "page_lianxirenxiangqing_del.lua",
-  "page_suoyoulianxiren.lua",
-  "page_xinlianxiren.lua",    
-  "func_add_contact.lua" 
+  "../closer_demo/test_inherit.lua",
+  "./dir_test/kobe_test.lua",
+  "JSON.lua",
+  "misc.lua",
+  "file_log.lua",
+  "server.lua", 
+  "main.lua"               
 }
 
 function file_save_load(filename, file)
@@ -27,8 +24,8 @@ function start_package()
 	file:write("--                                             --\n");
 	file:write("--                                             --\n");
 	rightnow_data = os.date("%Y%m%d");   --得到当前日期和时间
-    rightnow_time = os.date("%H:%M:%S");
-    time = "--" .. rightnow_data .. "  " .. rightnow_time .. "     kobe package \n"
+  rightnow_time = os.date("%H:%M:%S");
+  time = "--" .. rightnow_data .. "  " .. rightnow_time .. "     kobe package \n"
 	file:write(time)
 	file:write("--                                             --\n");
 	file:write("--                                             --\n");
