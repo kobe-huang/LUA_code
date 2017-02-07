@@ -53,7 +53,7 @@ function class_base_ms:run_task()
         my_task_d_name   = sl_fix_path .. my_task_d_name
     end
 
-    if nil ~= self.now_task_info.ms_task_d_name or type(my_task_d_name) ~= "string"  then  --脚本数据
+    if nil == self.now_task_info.ms_task_d_name or type(my_task_d_name) ~= "string"  then  --脚本数据
         --do-nothing
     else
         dofile(my_task_d_name) --加载脚本的数据

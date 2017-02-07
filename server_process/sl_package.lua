@@ -1,6 +1,7 @@
 --用来将文件打包 package--
 local package_name = "sl_main.lua"
 local package_file_list = {
+  "sl_package_config.lua",
   "./lib/lib_JSON.lua",
   "./misc/ms_info.lua",
   "./misc/file_log.lua",

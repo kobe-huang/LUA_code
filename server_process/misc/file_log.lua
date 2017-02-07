@@ -86,7 +86,7 @@ function logFileInit()
     if false == file_exists(file_path) then  --创建自己的临时文件夹
           os.execute("mkdir -p " .. file_path);
     end
-    writeStrToFile(rightnow_data .. " " .. rightnow_time .. "   ++++begin+++", log_file_name); 
+    writeStrToFile(rightnow_data .. " " .. rightnow_time .. "   ++++begin+++", sl_log_file); 
 end
 --function LogToFile
 

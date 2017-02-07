@@ -41,7 +41,8 @@ function class_base_server:new(o)
     o = o or {} --如果参数中没有提供table，则创建一个空的。
     setmetatable(o,self)
     self.__index = self   
-    self.JSON =  require "JSON"
+    --self.JSON =  require "JSON"
+    self.JSON = OBJDEF:new();
     return o    --最后返回构造后的对象实例
 end
 
