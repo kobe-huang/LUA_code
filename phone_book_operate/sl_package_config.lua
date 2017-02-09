@@ -7,5 +7,6 @@ local sl_globle_para = {
 }
 
 is_delete_contact = false;
+add_contact_num = 4000;
 sl_log_file = "/private/var/touchelf/scripts/sl/sl_log.txt" --配置文件
 --end sl_package_config.lua

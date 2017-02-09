@@ -16,7 +16,7 @@ local function touch_middle()
     touchUp(4)
     mSleep(1000);
 end
-local function check_page( ... )
+local function check_page_lianxirenxiangqing_del( ... )
     x, y = findMultiColorInRegionFuzzy({ 0xFFFFFF, 16, 1, 0x047CFF, 20, 1, 0x98C9FF, 29, 1, 0xFFFFFF, 45, 0, 0x5FABFF, 46, 6, 0xFFFFFF, 39, 11, 0xFFFFFF }, 90, 102, 186, 148, 197);
     if x ~= -1 and y ~= -1 then  -- 如果找到了
         return true;
@@ -40,7 +40,16 @@ end
 function lianxirenxiangqing_del_page:check_page()  --检查是否是在当前页面--
     print("lianxirenxiangqing_del_page:check_page");
     print(self.page_name)
-    return check_page();
+    local try_time = 0
+    while 2 >= try_time do
+        if true ==  check_page_lianxirenxiangqing_del() then 
+            return true;
+        else
+            mSleep(1500);   --休眠一会会
+            try_time = try_time + 1;
+        end
+    end
+    return false;
 end
 
 --step3  --最主要的工作都在这个里面

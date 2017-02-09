@@ -16,7 +16,7 @@ local function touch_middle()
     touchUp(4)
     mSleep(1000);
 end
-local function check_page( ... )
+local function check_page_suoyoulianxiren( ... )
     x, y = findMultiColorInRegionFuzzy({ 0x007AFF, 1, -6, 0xF7F7F7, 6, -7, 
     0x007AFF, 12, -7, 0xF7F7F7, 7, 6, 
     0x007AFF, 13, 5, 0xF7F7F7, 19, -1, 0x007AFF }, 
@@ -53,7 +53,17 @@ end
 function suoyoulianxiren_page:check_page()  --检查是否是在当前页面--
     print("suoyoulianxiren_page:check_page");
     print(self.page_name)
-    return check_page();
+    --return check_page();
+    local try_time = 0
+    while 2 >= try_time do
+        if true ==  check_page_suoyoulianxiren() then 
+            return true;
+        else
+            mSleep(1500);   --休眠一会会
+            try_time = try_time + 1;
+        end
+    end
+    return false;
 end
 
 --step3  --最主要的工作都在这个里面

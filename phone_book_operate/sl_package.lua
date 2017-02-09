@@ -2,15 +2,15 @@
 local  package_name = "sl_main.lua"
 local package_file_list = {
   "sl_package_config.lua",
-  "lib_file_log.lua",
-  "class_base_page.lua", 
-  "page_all_data.lua",                    
-  "page_main.lua",             
-  "page_suoyoulianxiren_del.lua",  
-  "page_lianxirenxiangqing_del.lua",
-  "page_suoyoulianxiren.lua",
-  "page_xinlianxiren.lua",    
-  "func_add_contact.lua" 
+  "./lib/lib_file_log.lua",
+  "./class/class_base_page.lua", 
+  "./page/page_all_data.lua",                    
+  "./page/page_main.lua",             
+  "./page/page_suoyoulianxiren_del.lua",  
+  "./page/page_lianxirenxiangqing_del.lua",
+  "./page/page_suoyoulianxiren.lua",
+  "./page/page_xinlianxiren.lua",
+  "main_add_contact.lua"
 }
 
 function file_save_load(filename, file)
@@ -73,21 +73,21 @@ function SaveTableContent(file, obj)
                   SaveTableContent(file, v);
                   file:write(", \n");
              end
+      file:write("}\n");
+      file:close();
+      assert(file);
+
+      file:write(table_name .. " = {\n");
             file:write("}\n");
       else
      	 error("can't serialize a "..szType);
       end
 end
 
-function SaveTable(myfile, table_name, table)
-      local file = io.open(myfile, "a");
-      assert(file);
-      file:write(table_name .. " = {\n");
-
       SaveTableContent(file, table);
 
-      file:write("}\n");
-      file:close();
+function SaveTable(myfile, table_name, table)
+      local file = io.open(myfile, "a");
 end
 
 SaveTable(package_name, "my_globle_para", my_globle_para)

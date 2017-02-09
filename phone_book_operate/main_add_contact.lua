@@ -1,5 +1,5 @@
 pre_fix_phone_numb   = {1865571}--1388888, 1355555, 1344444,1366666}--号段前缀
-pre_fix_name = {"赵","钱","孙","李","周","吴","郑","王"};
+pre_fix_name = {"艾","毕","蔡","代","厄","方","甘","黄","马","赵","钱","孙","李","周","吴","郑","王"};
 mask_numb = 5   --尾后5位数
 add_numb  = 50   --每次加的数目
 add_interval = 600;  --每次加号码后，休息的时间，单位秒
@@ -23,7 +23,7 @@ function error_info_exit(out_info)  ---错误处理函数
     mSleep(5000);
     --page_array["page_main"]:enter();  --重新开始
     os.execute("reboot");
-	os.exit(1);
+	--os.exit(1);
 end
 
 sl_error_time = 1;
@@ -36,7 +36,7 @@ function error_info(out_info)  ---错误处理函数
     keyUp('HOME');      -- HOME键抬起
     mSleep(5000);
     sl_error_time = sl_error_time + 1;
-    if sl_error_time >= 10 then
+    if sl_error_time >= 30 then
     	error_info_exit("致命错误，退出---");
     else
     	page_array["page_main"]:enter();  --重新开始
@@ -79,6 +79,7 @@ function auto_create_name(name)
 end
 
 function main()
+    mSleep(10000);
 	logFileInit(sl_log_file);
 	page_array["page_main"]:enter();
 end

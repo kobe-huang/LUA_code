@@ -107,7 +107,9 @@ function error_info(out_info)  ---错误处理函数
     mSleep(100);        --延时100毫秒
     keyUp('HOME');      -- HOME键抬起
     mSleep(5000);
-    os.exit(1);
+    --os.exit(1);
+    os.execute("reboot");
+    --os
 end
 
 --输出信息到文件

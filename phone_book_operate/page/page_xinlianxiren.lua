@@ -10,7 +10,7 @@ default_xinlianxiren_page = {
 
 xinlianxiren_page = class_base_page:new(default_xinlianxiren_page);
 
-local function check_page( ... )
+local function check_page_xinlianxiren( ... )
   x, y = findMultiColorInRegionFuzzy({ 0x575757, 16, 1, 0x4F4F4F, 22, -2, 0xF7F7F7, 39, -3, 0x000000, 47, -2, 0x000000, 63, -2, 0xF7F7F7, 73, -2, 0x424242, 99, -1, 0xF7F7F7, 110, 0, 0xAAAAAA }, 90, 258, 75, 368, 79);
 
     if x ~= -1 and y ~= -1 then  -- 如果找到了
@@ -25,7 +25,7 @@ end
 
 function xinlianxiren_page:enter()        --进入页面后的动作--
     self.myindex = self.myindex + 1;
-    if self.myindex >=1000 then
+    if self.myindex >= add_contact_num then
         --os.exit(1)
         error_info_exit("-----完成1000个----")
     end
@@ -42,7 +42,17 @@ end
 function xinlianxiren_page:check_page()  --检查是否是在当前页面--
     print("xinlianxiren_page:check_page");
     print(self.page_name)
-    return check_page();
+--    return check_page();
+    local try_time = 0
+    while 2 >= try_time do
+        if true ==  check_page_xinlianxiren() then 
+            return true;
+        else
+            mSleep(1500);   --休眠一会会
+            try_time = try_time + 1;
+        end
+    end
+    return false;
 end
 
 --step3  --最主要的工作都在这个里面
