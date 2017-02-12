@@ -1,27 +1,21 @@
+--服务器返回的数据：
+--{Code = 101, Message = "OK", 
+--data = {Strategy_ID = 40003, TaskDataID = 50003, 
+--TaskDataPath = "http://oss.temaiol.com/file/1/20170116/ffafadf22197d046a0db00bcd60db6a0.lua", 
+--TaskId = 50005, TaskPath = "http://oss.temaiol.com/file/1/20170116/ffafadf22197d046a0db00bcd60db6a0.lua"}}
 
 --从服务器得到的数据(格式)--
 base_return_info = {
-    Code = 101
-    , Message = "成功"
-    , TskId = 50001
-    , TskPath = "http://oss.techouol.com/images/2/2016/12/YHLhGDDh0IGtSc30IE7i7TLC931T1d.jpg"
-    , TskDataID = 50003
-    , TskDataPath = "http://oss.techouol.com/images/2/2016/12/YHLhGDDh0IGtSc30IE7i7TLC931T1d.jpg"
-    , StgID = 40003
+    Code = 101,
+    data = {
+          Message = "成功"
+        , TskId = 50001
+        , TskPath = "http://oss.techouol.com/images/2/2016/12/YHLhGDDh0IGtSc30IE7i7TLC931T1d.jpg"
+        , TskDataID = 50003
+        , TskDataPath = "http://oss.techouol.com/images/2/2016/12/YHLhGDDh0IGtSc30IE7i7TLC931T1d.jpg"
+        , StgID = 40003
+    }
 }
-
---默认的值
-local default_server_addr = "http://120.76.215.162/sl_base/addons/xsy_resource/gettaskdemo.php?task="
-local test_data ={  --json格式的数据
-    ms_id = "ABCDEFG12345678"
-    , ms_type = "ip4"
-    ,ms_act = "kobe" 
-    ,ms_pwd = "H11111111h"
-    ,ms_token = "shunliantianxia12345"
-    , ms_stg_id = 40004
-    , ms_task_id = 50005
-    , ms_task_d_id = 50003
-    , ms_status = "ideal" };
 
 class_base_server = {
     server_addr = default_server_addr,

@@ -4,12 +4,6 @@ default_ms_task_info = {
     , ms_task_d_id = 50000
 };
 
---服务器返回的数据：
---{Code = 101, Message = "OK", 
---data = {Strategy_ID = 40003, TaskDataID = 50003, 
---TaskDataPath = "http://oss.temaiol.com/file/1/20170116/ffafadf22197d046a0db00bcd60db6a0.lua", 
---TaskId = 50005, TaskPath = "http://oss.temaiol.com/file/1/20170116/ffafadf22197d046a0db00bcd60db6a0.lua"}}
-
 ---------------------------------------------------------------------ms 对象--------------------
 --发送给服务器的数据--
 class_base_ms = {
