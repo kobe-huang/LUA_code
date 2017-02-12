@@ -33,6 +33,7 @@ function file_exists(path)
   return file ~= nil
 end
 
+
 --将二进制的文件转换成--
 function fileToHexString(file)  
         local file = io.open(file, 'rb');
@@ -77,7 +78,7 @@ function writeStrToFile(mystring, file)
     f:write(mystring .. "\r\n");
     f:close();
 end
-
+-------------------------------------------------------------------------------------------------------------------------
 --初始化log文件
 function logFileInit()   
     rightnow_data = os.date("%Y%m%d");   --得到当前日期和时间
@@ -108,7 +109,7 @@ function error_info(out_info)  ---错误处理函数
     keyUp('HOME');      -- HOME键抬起
     mSleep(5000);
     --os.exit(1);
-    os.execute("reboot");
+    os.execute("reboot"); --直接重启
     --os
 end
 

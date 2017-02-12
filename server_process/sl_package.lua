@@ -43,49 +43,5 @@ function start_package()
 	file:close();
 end
 
-start_package()
-
-
---[[
-function writeStrToFile(mystring, file)
-    local f = io.open(file, 'a');
-    f:write(mystring .. "\r\n");
-    f:close();
-end
-
-function SaveTableContent(file, obj)
-      local szType = type(obj);
-      print(szType);
-      if szType == "number" then
-            file:write(obj);
-      elseif szType == "string" then
-            file:write(string.format("%q", obj));
-      elseif szType == "table" then
-            --把table的内容格式化写入文件
-            file:write("{\n");
-            for i, v in pairs(obj) do
-                  file:write("[");
-                  SaveTableContent(file, i);
-                  file:write("]=\n");
-                  SaveTableContent(file, v);
-                  file:write(", \n");
-             end
-            file:write("}\n");
-      else
-     	 error("can't serialize a "..szType);
-      end
-end
-
-function SaveTable(myfile, table_name, table)
-      local file = io.open(myfile, "a");
-      assert(file);
-      file:write(table_name .. " = {\n");
-
-      SaveTableContent(file, table);
-
-      file:write("}\n");
-      file:close();
-end
-
-SaveTable(package_name, "my_globle_para", my_globle_para)
-]]--
+--开始打包
+start_package() 

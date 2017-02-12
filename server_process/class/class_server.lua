@@ -65,22 +65,34 @@ function class_base_server:send_info(sl_data)
     end
     local raw_json_text = (self.JSON):encode(sl_data)  
     local xxxx = self.server_addr .. raw_json_text;
-    local mydata = httpGet(xxxx);
+    local mydata = httpGet(xxxx); --检查mydata的有效性
     mSleep(1000);
-
-    local ret_value = (self.JSON):decode(mydata)
-    if nil == ret_value then --如果不是json数据，会返回nil
+    if nil == mydata then         --判断返回的数据是否正常
         return false
     else
-        return ret_value
+        local ret_value = (self.JSON):decode(mydata)
+        if nil == ret_value then --如果不是json数据，会返回nil
+            return false
+        else
+            return ret_value
+        end
     end
 end
 
 --下载文件
 --后期也可以改成luasocket的模式
 function class_base_server:get_file(local_path,sl_url) 
-    os.execute("curl -o " .. local_path .." " .. sl_url)
-    return true;
+    local try_time = 1
+    while 5 >= try_time do
+        os.execute("curl -o " .. local_path .." " .. sl_url)
+        mSleep(1000*try_time);  --时间逐步加长
+        if true == file_exists(local_path) then
+            return true;
+        else
+            try_time = try_time + 1;
+        end
+    end
+    return false; 
 end
 
 --[[
@@ -104,7 +116,6 @@ end
 function class_base_server:get_server_addr()
     return self.server_addr;
 end
-
 
 --发送GET消息；参数sl_data为table型的数据
 function class_base_server:send_info(sl_data)

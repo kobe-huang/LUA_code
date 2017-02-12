@@ -3,6 +3,13 @@ default_ms_task_info = {
     , ms_task_id = 50000
     , ms_task_d_id = 50000
 };
+
+--服务器返回的数据：
+--{Code = 101, Message = "OK", 
+--data = {Strategy_ID = 40003, TaskDataID = 50003, 
+--TaskDataPath = "http://oss.temaiol.com/file/1/20170116/ffafadf22197d046a0db00bcd60db6a0.lua", 
+--TaskId = 50005, TaskPath = "http://oss.temaiol.com/file/1/20170116/ffafadf22197d046a0db00bcd60db6a0.lua"}}
+
 ---------------------------------------------------------------------ms 对象--------------------
 --发送给服务器的数据--
 class_base_ms = {
@@ -13,7 +20,7 @@ class_base_ms = {
 	    ,ms_pwd = "H11111111h"
 	    ,ms_token = "shunliantianxia12345"
 	},
-    now_task_info= {
+    now_task_info = {
 		ms_stg_id = 40000     --策略ID
 	    , ms_task_id = 50000  --任务ID
 	    , ms_task_name = "test_task_0.lua" --任务名称
@@ -82,16 +89,15 @@ function class_base_ms:analy_server_data(task_info)
         local_task_data_file = sl_fix_path .. new_task_data_name;
     end
     
-	if false == file_exists(local_task_file) then    --看本地是否存在
+	if false == file_exists(local_task_file) then                       --看本地是否存在
 		self.server:get_file(local_task_file, task_info.data.TaskPath); --下载脚本
-		mSleep(1000);
+		--mSleep(1000);
 	end
 
 	if nil ~= new_task_data_name and false == file_exists(local_task_data_file) then    --看本地是否存在
 		self.server:get_file(local_task_data_file, task_info.data.TaskDataPath); --下载脚本数据
-		mSleep(1000);
+		--mSleep(1000);
 	end
-	
 	
 	self.now_task_info.ms_task_id    = task_info.data.TaskId;
 	self.now_task_info.ms_task_name  = new_task_name;
@@ -104,11 +110,13 @@ end
 
 
 --从服务器得到任务--
+--返回参数： false  失败
+--          true   成功
 function class_base_ms:get_task()  	
     
     local task_info = nil;
 	local mydata = {};
-	local try_time = 0; --接收数据超时的次数
+	local try_time = 1; --接收数据超时的次数
 	for k,v in pairs(self.base_info) do
 		--print(k,v)
 		--table.insert(mydata, k, v)
@@ -118,12 +126,12 @@ function class_base_ms:get_task()
 		mydata[k] = v;
 	end
 
-	if nil ~= self.server then 
-		while 2 >= try_time do
+	if nil ~= self.server then           --如果得到任务不成功，try几次
+		while 4 >= try_time do
 			task_info = self.server:send_info(mydata) --发送消息给服务器
 			if false == task_info then
 				try_time = try_time + 1;
-				mSleep(3000);
+				mSleep(1500*try_time);  --sleep时间逐渐加长
 			else
 				break;
 			end
@@ -132,7 +140,7 @@ function class_base_ms:get_task()
     
 	--得到服务器信息后处理--
 	if nil ~= task_info and false ~= task_info then--如果是有效数据
-		if task_info.Code == 101 then
+		if task_info.Code == 101 then 
 			return self.analy_server_data(self,task_info) --注意这个地方，必须加self，因为不是 “：”调用。 by kobe
             --[[
             if "string" ~= type(task_info.data.TaskPath) or "number" ~= type(task_info.data.TaskId) then
