@@ -5,6 +5,7 @@ function init_page(b)
     if b.page_name then --这里将table对象b的name字段值作为personInfo的key信息。
     	if true == sl_globle_para.is_package then 
     		--donothing
+            --page_array[b.page_name] = b.page_name:new() --放在各个page里面
     	else
 	        require(b.page_name) --初始化页面对象
 	        print("test");

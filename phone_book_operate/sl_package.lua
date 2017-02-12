@@ -4,7 +4,7 @@ local package_file_list = {
   "sl_package_config.lua",
   "./lib/lib_file_log.lua",
   "./class/class_base_page.lua", 
-  "./page/page_all_data.lua",                    
+  "./page/page_all_data.lua",    --放在page的第一位                 
   "./page/page_main.lua",             
   "./page/page_suoyoulianxiren_del.lua",  
   "./page/page_lianxirenxiangqing_del.lua",
