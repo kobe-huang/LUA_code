@@ -1,3 +1,32 @@
+function test_pair_ipair( ... )
+    local test_table = {
+        huang = { i = 5,
+            tt = "1212"
+            },
+        yin = {
+            i = 12,
+            tt = "dsdsd"
+        },
+        ke = {
+            i = 21;
+            tt = "pppp"
+        }
+    }
+    for k,v in pairs(test_table) do
+       print(k,v);
+       print(v.i);
+       print(v.tt);
+
+    end
+  -- for i,v in ipairs(test_table) do
+  --     print(i,v)
+  -- end
+    -- body
+end
+
+test_pair();
+
+
 function test_JSON()
     mystring = "{\"Code\":101,\"Message\":\"OK\",\"data\":{\"TaskId\":50005,\"TaskPath\":\"http:\\/\\/oss.temaiol.com\\/file\\/1\\/20170116\\/ffafadf22197d046a0db00bcd60db6a0.lua\",\"TaskDataID\":50003,\"TaskDataPath\":\"http:\\/\\/oss.temaiol.com\\/file\\/1\\/20170116\\/ffafadf22197d046a0db00bcd60db6a0.lua\",\"Strategy_ID\":40003}}"
     myJson = require "JSON"
@@ -17,12 +46,7 @@ end
 function function_name( ... )
     notifyMessage("121212");
 end
-huangyinke = nil
-if nil == huangyinke then
-    function_name();
-    --os.exit(1);
-    --mSleep(100000)
-end
+
 --huangyinke = nil
 
 --[[

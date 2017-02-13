@@ -43,23 +43,27 @@ function xinlianxiren_page:check_page()  --检查是否是在当前页面--
     print("xinlianxiren_page:check_page");
     print(self.page_name)
 --    return check_page();
-    local try_time = 0
-    while 2 >= try_time do
+    local try_time = 1
+    while 3 < try_time do
+        mSleep(1000*try_time);   --休眠一会会
         if true ==  check_page_xinlianxiren() then 
             return true;
         else
-            mSleep(1500);   --休眠一会会
             try_time = try_time + 1;
         end
     end
     return false;
 end
 
+function xinlianxiren_page:quick_check_page()  --快速检查是否是在当前页面--
+   return  check_page_xinlianxiren();     
+end
+
 --step3  --最主要的工作都在这个里面
 function xinlianxiren_page:action()     --执行这个页面的操作--
     print("xinlianxiren_page:check_page");
     print(self.page_name)
-    my_name, my_number = generate_contact_info();
+    my_name, my_number = generate_contact_info(); --产生随机的信息
      
     rotateScreen(0);
     mSleep(1233);

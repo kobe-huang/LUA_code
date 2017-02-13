@@ -26,6 +26,13 @@ function class_base_page:check_page()  --检查是否是在当前页面--
     return true;
 end
 
+function class_base_page:quick_check_page()  --快速检查页面--
+    print("class_base_page:check_page");
+    print(self.page_name)
+    return true;
+end
+
+
 --step3
 function class_base_page:action()     --执行这个页面的操作--
     print("class_base_page:check_page");

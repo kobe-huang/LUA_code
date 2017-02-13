@@ -1,7 +1,7 @@
 ------------------------sl_main.lua--------
 --                                             --
 --                                             --
---20170209  19:04:31     kobe package 
+--20170213  11:22:18     kobe package 
 --                                             --
 --                                             --
 --                                             --
@@ -17,14 +17,14 @@
 --begin sl_package_config.lua
 package.path=package.path .. ";/Users/huangyinke/Desktop/Code/lua/lua_server/scripts/add_contact/?.lua"
 package.path=package.path .. ";/private/var/touchelf/scripts/?.lua" .. ";/private/var/touchelf/scripts/sl/?.lua"
-local sl_globle_para = { 
-	is_package = true; 
+local sl_globle_para = {  --全局变量
+	is_package = true;    --是否是打包的程序
 	package_info = "huangyike_V0.1"
 }
 
 is_delete_contact = false;
-add_contact_num = 4000;
-sl_log_file = "/private/var/touchelf/scripts/sl/sl_log.txt" --配置文件
+add_contact_num   = 4000;
+sl_log_file       = "/private/var/touchelf/scripts/sl/sl_log.txt" --配置文件
 --end sl_package_config.lua
 
 ------------------end:  sl_package_config.lua-------------------------------------
@@ -166,6 +166,13 @@ function class_base_page:check_page()  --检查是否是在当前页面--
     return true;
 end
 
+function class_base_page:quick_check_page()  --快速检查页面--
+    print("class_base_page:check_page");
+    print(self.page_name)
+    return true;
+end
+
+
 --step3
 function class_base_page:action()     --执行这个页面的操作--
     print("class_base_page:check_page");
@@ -194,6 +201,7 @@ function init_page(b)
     if b.page_name then --这里将table对象b的name字段值作为personInfo的key信息。
     	if true == sl_globle_para.is_package then 
     		--donothing
+            --page_array[b.page_name] = b.page_name:new() --放在各个page里面
     	else
 	        require(b.page_name) --初始化页面对象
 	        print("test");
@@ -285,12 +293,27 @@ end
 function main_page:check_page()  --检查是否是在当前页面--
     print("main_page:check_page");
     print(self.page_name);
-    local try_time = 0
-    while 2 >= try_time do
+    local try_time = 1
+    while 3 < try_time do
         if true ==  check_page_main() then 
             return true;
         else
-            mSleep(1500);   --休眠一会会
+            mSleep(1000*try_time);   --休眠一会会
+            try_time = try_time + 1;
+        end
+    end
+    return false;
+end
+
+function main_page:quick_check_page()  --检查是否是在当前页面--
+    print("main_page:check_page");
+    print(self.page_name);
+    local try_time = 1
+    while 2 < try_time do
+        if true ==  check_page_main() then 
+            return true;
+        else
+            mSleep(1000*try_time);   --休眠一会会
             try_time = try_time + 1;
         end
     end
@@ -385,12 +408,28 @@ function suoyoulianxiren_del_page:check_page()  --检查是否是在当前页面
     print("suoyoulianxiren_del_page:check_page");
     print(self.page_name)
     --return check_page();
-    local try_time = 0
-    while 2 >= try_time do
+    local try_time = 1
+    while 3 < try_time do
         if true ==  check_page_suoyoulianxiren_del() then 
             return true;
         else
-            mSleep(1500);   --休眠一会会
+            mSleep(1000*try_time);   --休眠一会会
+            try_time = try_time + 1;
+        end
+    end
+    return false;
+end
+
+function suoyoulianxiren_del_page:check_page()  --检查是否是在当前页面--
+    print("suoyoulianxiren_del_page:check_page");
+    print(self.page_name)
+    --return check_page();
+    local try_time = 1
+    while 2 < try_time do
+        if true ==  check_page_suoyoulianxiren_del() then 
+            return true;
+        else
+            mSleep(1000*try_time);   --休眠一会会
             try_time = try_time + 1;
         end
     end
@@ -473,12 +512,27 @@ end
 function lianxirenxiangqing_del_page:check_page()  --检查是否是在当前页面--
     print("lianxirenxiangqing_del_page:check_page");
     print(self.page_name)
-    local try_time = 0
-    while 2 >= try_time do
+    local try_time = 1
+    while 3 < try_time do
         if true ==  check_page_lianxirenxiangqing_del() then 
             return true;
         else
-            mSleep(1500);   --休眠一会会
+            mSleep(1000*try_time);   --休眠一会会
+            try_time = try_time + 1;
+        end
+    end
+    return false;
+end
+
+function lianxirenxiangqing_del_page:quick_check_page()  --检查是否是在当前页面--
+    print("lianxirenxiangqing_del_page:check_page");
+    print(self.page_name)
+    local try_time = 1
+    while 2 < try_time do
+        if true ==  check_page_lianxirenxiangqing_del() then 
+            return true;
+        else
+            mSleep(1000*try_time);   --休眠一会会
             try_time = try_time + 1;
         end
     end
@@ -673,12 +727,28 @@ function suoyoulianxiren_page:check_page()  --检查是否是在当前页面--
     print("suoyoulianxiren_page:check_page");
     print(self.page_name)
     --return check_page();
-    local try_time = 0
-    while 2 >= try_time do
+    local try_time = 1
+    while 3 < try_time do
         if true ==  check_page_suoyoulianxiren() then 
             return true;
         else
-            mSleep(1500);   --休眠一会会
+            mSleep(1000*try_time);   --休眠一会会
+            try_time = try_time + 1;
+        end
+    end
+    return false;
+end
+
+function suoyoulianxiren_page:quick_check_page()  --检查是否是在当前页面--
+    print("suoyoulianxiren_page:check_page");
+    print(self.page_name)
+    --return check_page();
+    local try_time = 1
+    while 2 < try_time do
+        if true ==  check_page_suoyoulianxiren() then 
+            return true;
+        else
+            mSleep(1000*try_time);   --休眠一会会
             try_time = try_time + 1;
         end
     end
@@ -753,12 +823,28 @@ function xinlianxiren_page:check_page()  --检查是否是在当前页面--
     print("xinlianxiren_page:check_page");
     print(self.page_name)
 --    return check_page();
-    local try_time = 0
-    while 2 >= try_time do
+    local try_time = 1
+    while 3 < try_time do
         if true ==  check_page_xinlianxiren() then 
             return true;
         else
-            mSleep(1500);   --休眠一会会
+            mSleep(1000*try_time);   --休眠一会会
+            try_time = try_time + 1;
+        end
+    end
+    return false;
+end
+
+function xinlianxiren_page:quick_check_page()  --检查是否是在当前页面--
+    print("xinlianxiren_page:check_page");
+    print(self.page_name)
+--    return check_page();
+    local try_time = 1
+    while 2 < try_time do
+        if true ==  check_page_xinlianxiren() then 
+            return true;
+        else
+            mSleep(1000*try_time);   --休眠一会会
             try_time = try_time + 1;
         end
     end

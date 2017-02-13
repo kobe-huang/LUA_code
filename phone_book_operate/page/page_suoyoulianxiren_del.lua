@@ -54,16 +54,20 @@ function suoyoulianxiren_del_page:check_page()  --检查是否是在当前页面
     print("suoyoulianxiren_del_page:check_page");
     print(self.page_name)
     --return check_page();
-    local try_time = 0
-    while 2 >= try_time do
+    local try_time = 1
+    while 3 < try_time do
+        mSleep(1000*try_time);   --休眠一会会
         if true ==  check_page_suoyoulianxiren_del() then 
             return true;
-        else
-            mSleep(1500);   --休眠一会会
+        else           
             try_time = try_time + 1;
         end
     end
     return false;
+end
+
+function suoyoulianxiren_del_page:quick_check_page()  --检查是否是在当前页面--
+    return  check_page_suoyoulianxiren_del();
 end
 
 --step3  --最主要的工作都在这个里面

@@ -13,6 +13,15 @@ function init_page(b)
     end
 end
 
+function check_current_page()
+    for k,v in pairs(page_array) do 
+        if true == page_array[k]:quick_check_page() then
+            return k;
+        end
+    end
+    return false
+end
+
 init_page{
     page_name = "page_main", --聊天主界面-群聊天
  --   page_image_path = "/private/var/touchelf/scripts/contact/res/full_page/liaotianzhujiemian.bmp"

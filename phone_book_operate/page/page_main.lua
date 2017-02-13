@@ -51,16 +51,20 @@ end
 function main_page:check_page()  --检查是否是在当前页面--
     print("main_page:check_page");
     print(self.page_name);
-    local try_time = 0
-    while 2 >= try_time do
+    local try_time = 1
+    while 3 < try_time do
+        mSleep(1000*try_time);   --休眠一会会
         if true ==  check_page_main() then 
             return true;
-        else
-            mSleep(1500);   --休眠一会会
+        else          
             try_time = try_time + 1;
         end
     end
     return false;
+end
+
+function main_page:quick_check_page()  --快速检查是否是在当前页面--
+    return check_page_main()
 end
 
 --step3  --最主要的工作都在这个里面
