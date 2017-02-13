@@ -49,23 +49,22 @@ function class_base_ms:run_task()
 	local my_task_d_name = self.now_task_info.ms_task_d_name;
 
     my_taskname = sl_fix_path .. my_taskname
-    
+    if false == file_exists(my_taskname) then
+    	warning_info("文件不存在" .. my_taskname);
+    	return false;
+    end
+
     if nil ~= my_task_d_name then
         my_task_d_name   = sl_fix_path .. my_task_d_name
     end
 
-    if nil == self.now_task_info.ms_task_d_name or type(my_task_d_name) ~= "string"  then  --脚本数据
+    if nil == self.now_task_info.ms_task_d_name or  false == file_exists(my_task_d_name)  then  --脚本数据
         --do-nothing
     else
         dofile(my_task_d_name) --加载脚本的数据
     end
-
-	if type(my_taskname) ~= "string"  then
-        return false
-    else
-    	--require "taskname执行脚本"
-        dofile(my_taskname) --执行脚本
-    end
+	--require "taskname执行脚本"
+    dofile(my_taskname) --执行脚本
 end
 
 --分析从服务器得到的信息
@@ -134,8 +133,9 @@ function class_base_ms:get_task()
     
 	--得到服务器信息后处理--
 	if nil ~= task_info and false ~= task_info then--如果是有效数据
-		if task_info.Code == 101 then 
+		if task_info.Code == 101 then              --判断是否是正确的代码 
 			return self.analy_server_data(self,task_info) --注意这个地方，必须加self，因为不是 “：”调用。 by kobe
+			                                              --或者改成 self:analy_server_data(task_info)
             --[[
             if "string" ~= type(task_info.data.TaskPath) or "number" ~= type(task_info.data.TaskId) then
                 error_info("接收服务器代码错误 ");

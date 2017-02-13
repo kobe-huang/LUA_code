@@ -1,7 +1,7 @@
 ------------------------sl_main.lua--------
 --                                             --
 --                                             --
---20170213  11:22:18     kobe package 
+--20170213  19:40:08     kobe package 
 --                                             --
 --                                             --
 --                                             --
@@ -25,6 +25,7 @@ local sl_globle_para = {  --全局变量
 is_delete_contact = false;
 add_contact_num   = 4000;
 sl_log_file       = "/private/var/touchelf/scripts/sl/sl_log.txt" --配置文件
+sl_error_time     = 1;  --容错处理
 --end sl_package_config.lua
 
 ------------------end:  sl_package_config.lua-------------------------------------
@@ -46,12 +47,6 @@ function strippath(filename)
     --return string.match(filename, “.+\\([^\\]*%.%w+)$”) — *nix system  
 end  
 
---[[
-local test_file = "http://oss.techouol.com/images/2/2016/12/YHLhGDDh0IGtSc30IE7i7TLC931T1d.jpg"
-print(stripfilename(test_file))
-print(strippath(test_file))
---]]
-  
 --去除扩展名  
 function stripextension(filename)  
     local idx = filename:match(".+()%.%w+$")  
@@ -119,6 +114,9 @@ function writeStrToFile(mystring, file)
     f:close();
 end
 
+
+
+-----------------------------------------------------------------------log----------------------------------------
 --初始化log文件
 function logFileInit(log_file_name)   
     rightnow_data = os.date("%Y%m%d");   --得到当前日期和时间
@@ -129,6 +127,57 @@ function logFileInit(log_file_name)
     end
     writeStrToFile(rightnow_data .. " " .. rightnow_time .. "   ++++begin+++", log_file_name); 
 end
+
+--得到本机当前时间
+function get_local_time()
+    local rightnow_data = os.date("%Y%m%d");   --得到当前日期和时间
+    local rightnow_time = os.date("%H:%M:%S");
+    local my_time = rightnow_data .. ": " .. rightnow_time .. ": "
+    return my_time;
+end 
+
+--输出信息到文件
+function log_info(out_info)  ---错误处理函数   
+    --notifyMessage(out_info);
+    local time = get_local_time(); 
+    writeStrToFile("info:  " .. time .. out_info , sl_log_file);    
+end
+
+function error_info_exit(out_info)  ---错误处理函数   
+    local time = get_local_time(); 
+    writeStrToFile("fatal error:  " .. time .. out_info , sl_log_file); 
+    notifyMessage(out_info);   
+    keyDown('HOME');    -- HOME键按下
+    mSleep(100);        --延时100毫秒
+    keyUp('HOME');      -- HOME键抬起
+    mSleep(5000);
+    --page_array["page_main"]:enter();  --重新开始
+    os.execute("reboot");
+    --os.exit(1);
+end
+
+function error_info(out_info)  ---错误处理函数   
+    local time = get_local_time(); 
+    writeStrToFile("error:  " .. time .. out_info , sl_log_file); 
+    notifyMessage(out_info);   
+    keyDown('HOME');    -- HOME键按下
+    mSleep(100);        --延时100毫秒
+    keyUp('HOME');      -- HOME键抬起
+    mSleep(5000);
+    sl_error_time = sl_error_time + 1;
+    if sl_error_time >= 30 then
+        error_info_exit("致命错误，退出---");
+    else
+        page_array["page_main"]:enter();  --重新开始
+    end
+    --os.exit(1);
+end
+
+--[[
+local test_file = "http://oss.techouol.com/images/2/2016/12/YHLhGDDh0IGtSc30IE7i7TLC931T1d.jpg"
+print(stripfilename(test_file))
+print(strippath(test_file))
+--]]
 
 --function LogToFile
 --end lib_file_log.lua
@@ -197,6 +246,8 @@ end
 ----begin page_all_data.lua
 --package.path=package.path .. ";/Users/huangyinke/Desktop/Code/lua/lua_server/scripts/add_contact/?.lua"
 page_array = {} --所有的page table
+
+--初始化页面
 function init_page(b)  
     if b.page_name then --这里将table对象b的name字段值作为personInfo的key信息。
     	if true == sl_globle_para.is_package then 
@@ -208,6 +259,17 @@ function init_page(b)
 	    end
     end
 end
+
+--得到当前的页面
+function get_current_page()
+    for k,v in pairs(page_array) do 
+        if true == page_array[k]:quick_check_page() then
+            return k;
+        end
+    end
+    return false
+end
+
 
 init_page{
     page_name = "page_main", --聊天主界面-群聊天
@@ -295,29 +357,18 @@ function main_page:check_page()  --检查是否是在当前页面--
     print(self.page_name);
     local try_time = 1
     while 3 < try_time do
+        mSleep(1000*try_time);   --休眠一会会
         if true ==  check_page_main() then 
             return true;
-        else
-            mSleep(1000*try_time);   --休眠一会会
+        else          
             try_time = try_time + 1;
         end
     end
     return false;
 end
 
-function main_page:quick_check_page()  --检查是否是在当前页面--
-    print("main_page:check_page");
-    print(self.page_name);
-    local try_time = 1
-    while 2 < try_time do
-        if true ==  check_page_main() then 
-            return true;
-        else
-            mSleep(1000*try_time);   --休眠一会会
-            try_time = try_time + 1;
-        end
-    end
-    return false;
+function main_page:quick_check_page()  --快速检查是否是在当前页面--
+    return check_page_main()
 end
 
 --step3  --最主要的工作都在这个里面
@@ -410,30 +461,18 @@ function suoyoulianxiren_del_page:check_page()  --检查是否是在当前页面
     --return check_page();
     local try_time = 1
     while 3 < try_time do
+        mSleep(1000*try_time);   --休眠一会会
         if true ==  check_page_suoyoulianxiren_del() then 
             return true;
-        else
-            mSleep(1000*try_time);   --休眠一会会
+        else           
             try_time = try_time + 1;
         end
     end
     return false;
 end
 
-function suoyoulianxiren_del_page:check_page()  --检查是否是在当前页面--
-    print("suoyoulianxiren_del_page:check_page");
-    print(self.page_name)
-    --return check_page();
-    local try_time = 1
-    while 2 < try_time do
-        if true ==  check_page_suoyoulianxiren_del() then 
-            return true;
-        else
-            mSleep(1000*try_time);   --休眠一会会
-            try_time = try_time + 1;
-        end
-    end
-    return false;
+function suoyoulianxiren_del_page:quick_check_page()  --检查是否是在当前页面--
+    return  check_page_suoyoulianxiren_del();
 end
 
 --step3  --最主要的工作都在这个里面
@@ -514,10 +553,10 @@ function lianxirenxiangqing_del_page:check_page()  --检查是否是在当前页
     print(self.page_name)
     local try_time = 1
     while 3 < try_time do
+        mSleep(1000*try_time);   --休眠一会会
         if true ==  check_page_lianxirenxiangqing_del() then 
             return true;
-        else
-            mSleep(1000*try_time);   --休眠一会会
+        else          
             try_time = try_time + 1;
         end
     end
@@ -525,18 +564,7 @@ function lianxirenxiangqing_del_page:check_page()  --检查是否是在当前页
 end
 
 function lianxirenxiangqing_del_page:quick_check_page()  --检查是否是在当前页面--
-    print("lianxirenxiangqing_del_page:check_page");
-    print(self.page_name)
-    local try_time = 1
-    while 2 < try_time do
-        if true ==  check_page_lianxirenxiangqing_del() then 
-            return true;
-        else
-            mSleep(1000*try_time);   --休眠一会会
-            try_time = try_time + 1;
-        end
-    end
-    return false;
+    return check_page_lianxirenxiangqing_del()
 end
 
 --step3  --最主要的工作都在这个里面
@@ -729,10 +757,10 @@ function suoyoulianxiren_page:check_page()  --检查是否是在当前页面--
     --return check_page();
     local try_time = 1
     while 3 < try_time do
+         mSleep(1000*try_time);   --休眠一会会
         if true ==  check_page_suoyoulianxiren() then 
             return true;
-        else
-            mSleep(1000*try_time);   --休眠一会会
+        else  
             try_time = try_time + 1;
         end
     end
@@ -740,19 +768,7 @@ function suoyoulianxiren_page:check_page()  --检查是否是在当前页面--
 end
 
 function suoyoulianxiren_page:quick_check_page()  --检查是否是在当前页面--
-    print("suoyoulianxiren_page:check_page");
-    print(self.page_name)
-    --return check_page();
-    local try_time = 1
-    while 2 < try_time do
-        if true ==  check_page_suoyoulianxiren() then 
-            return true;
-        else
-            mSleep(1000*try_time);   --休眠一会会
-            try_time = try_time + 1;
-        end
-    end
-    return false;
+    return  check_page_suoyoulianxiren() ;
 end
 
 --step3  --最主要的工作都在这个里面
@@ -825,37 +841,25 @@ function xinlianxiren_page:check_page()  --检查是否是在当前页面--
 --    return check_page();
     local try_time = 1
     while 3 < try_time do
+        mSleep(1000*try_time);   --休眠一会会
         if true ==  check_page_xinlianxiren() then 
             return true;
         else
-            mSleep(1000*try_time);   --休眠一会会
             try_time = try_time + 1;
         end
     end
     return false;
 end
 
-function xinlianxiren_page:quick_check_page()  --检查是否是在当前页面--
-    print("xinlianxiren_page:check_page");
-    print(self.page_name)
---    return check_page();
-    local try_time = 1
-    while 2 < try_time do
-        if true ==  check_page_xinlianxiren() then 
-            return true;
-        else
-            mSleep(1000*try_time);   --休眠一会会
-            try_time = try_time + 1;
-        end
-    end
-    return false;
+function xinlianxiren_page:quick_check_page()  --快速检查是否是在当前页面--
+   return  check_page_xinlianxiren();     
 end
 
 --step3  --最主要的工作都在这个里面
 function xinlianxiren_page:action()     --执行这个页面的操作--
     print("xinlianxiren_page:check_page");
     print(self.page_name)
-    my_name, my_number = generate_contact_info();
+    my_name, my_number = generate_contact_info(); --产生随机的信息
      
     rotateScreen(0);
     mSleep(1233);
@@ -1029,66 +1033,21 @@ add_numb  = 50   --每次加的数目
 add_interval = 600;  --每次加号码后，休息的时间，单位秒
 del_contact_num = 10 --多少次后，直接删除所有的电话簿
 
---得到本机当前时间
-function get_local_time()
-	local rightnow_data = os.date("%Y%m%d");   --得到当前日期和时间
-    local rightnow_time = os.date("%H:%M:%S");
-    local my_time = rightnow_data .. ": " .. rightnow_time .. ": "
-    return my_time;
-end 
-
-function error_info_exit(out_info)  ---错误处理函数   
-	local time = get_local_time(); 
-    writeStrToFile("fatal error:  " .. time .. out_info , sl_log_file); 
-    notifyMessage(out_info);   
-    keyDown('HOME');    -- HOME键按下
-    mSleep(100);        --延时100毫秒
-    keyUp('HOME');      -- HOME键抬起
-    mSleep(5000);
-    --page_array["page_main"]:enter();  --重新开始
-    os.execute("reboot");
-	--os.exit(1);
-end
-
-sl_error_time = 1;
-function error_info(out_info)  ---错误处理函数   
-	local time = get_local_time(); 
-    writeStrToFile("error:  " .. time .. out_info , sl_log_file); 
-    notifyMessage(out_info);   
-    keyDown('HOME');    -- HOME键按下
-    mSleep(100);        --延时100毫秒
-    keyUp('HOME');      -- HOME键抬起
-    mSleep(5000);
-    sl_error_time = sl_error_time + 1;
-    if sl_error_time >= 30 then
-    	error_info_exit("致命错误，退出---");
-    else
-    	page_array["page_main"]:enter();  --重新开始
-    end
-	--os.exit(1);
-end
-
-
-
 function generate_contact_info() --产生随机号码
-	local  x = math.random(99999);
-	local  xx = pre_fix_phone_numb[math.random(#pre_fix_phone_numb)]
-	x = (xx * 100000) + x
+    local  x = math.random(99999);
+    local  xx = pre_fix_phone_numb[math.random(#pre_fix_phone_numb)]
+    x = (xx * 100000) + x
 
-	local  y = tostring(x)
-	y = string.sub(y, -3, -1)
+    local  y = tostring(x)
+    y = string.sub(y, -3, -1)
 
-	local my_name = pre_fix_name[math.random(#pre_fix_name)] .. y
-	x = tostring(x)
-	--print(x)
-	--print(my_name)
-	return my_name, x;
-	-- body
+    local my_name = pre_fix_name[math.random(#pre_fix_name)] .. y
+    x = tostring(x)
+    --print(x)
+    --print(my_name)
+    return my_name, x;
+    -- body
 end
-
---for i=1,20 do
---	generate_contact_info();
---end
 
 function add_contact_init()
 end
@@ -1108,20 +1067,9 @@ function main()
 	page_array["page_main"]:enter();
 end
 
+--for i=1,20 do
+--  generate_contact_info();
+--end
 
---print("it's kobe" .. package.path);
---[[
-print(#pre_fix_phone_numb)
-print(pre_fix_phone_numb[0])
-for i=1,10 do
-	print(math.random(99999))
-end
-print(math.random(3))
-]]--
 
---copyText("你好")     -- 复制字符串“你好”到系统剪贴板
---text = clipText()   -- 将之前复制或剪贴的文字读取到变量text中
---inputText(text)     --在输入框中输入获取到的字符串
-
---输出错误信息到文件
 ------------------end:  main_add_contact.lua-------------------------------------

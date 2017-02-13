@@ -1,6 +1,8 @@
 ----begin page_all_data.lua
 --package.path=package.path .. ";/Users/huangyinke/Desktop/Code/lua/lua_server/scripts/add_contact/?.lua"
 page_array = {} --所有的page table
+
+--初始化页面
 function init_page(b)  
     if b.page_name then --这里将table对象b的name字段值作为personInfo的key信息。
     	if true == sl_globle_para.is_package then 
@@ -13,7 +15,8 @@ function init_page(b)
     end
 end
 
-function check_current_page()
+--得到当前的页面
+function get_current_page()
     for k,v in pairs(page_array) do 
         if true == page_array[k]:quick_check_page() then
             return k;
@@ -21,6 +24,7 @@ function check_current_page()
     end
     return false
 end
+
 
 init_page{
     page_name = "page_main", --聊天主界面-群聊天

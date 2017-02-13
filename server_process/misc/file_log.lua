@@ -78,6 +78,7 @@ function writeStrToFile(mystring, file)
     f:write(mystring .. "\r\n");
     f:close();
 end
+
 -------------------------------------------------------------------------------------------------------------------------
 --初始化log文件
 function logFileInit()   
@@ -108,8 +109,8 @@ function error_info(out_info)  ---错误处理函数
     mSleep(100);        --延时100毫秒
     keyUp('HOME');      -- HOME键抬起
     mSleep(5000);
-    --os.exit(1);
-    os.execute("reboot"); --直接重启
+    os.exit(1);
+    --os.execute("reboot"); --直接重启
     --os
 end
 
@@ -118,4 +119,11 @@ function log_info(out_info)  ---错误处理函数
     --notifyMessage(out_info);
     local time = get_local_time(); 
     writeStrToFile("info:  " .. time .. out_info , sl_log_file);    
+end
+
+--输出警告信息到文件
+function warning_info(out_info)  ---错误处理函数   
+    notifyMessage("警告：" .. out_info);
+    local time = get_local_time(); 
+    writeStrToFile("warning:  " .. time .. out_info , sl_log_file);    
 end

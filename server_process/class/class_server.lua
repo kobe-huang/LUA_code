@@ -65,10 +65,10 @@ function class_base_server:send_info(sl_data)
         return false
     else
         local ret_value = (self.JSON):decode(mydata)
-        if nil == ret_value then --如果不是json数据，会返回nil
-            return false
+        if 'table' ~= type(ret_value) then --如果不是json&table数据，会返回nil
+            return false;
         else
-            return ret_value
+            return ret_value;
         end
     end
 end
@@ -88,6 +88,8 @@ function class_base_server:get_file(local_path,sl_url)
     end
     return false; 
 end
+
+
 
 --[[
 --新建一个服务器--
