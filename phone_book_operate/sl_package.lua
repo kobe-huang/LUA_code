@@ -1,16 +1,18 @@
 --用来将文件打包 package--
-local  package_name = "sl_main.lua"
+local  func_name = "phone_book_opt"
+local  package_name = "sl_func_" .. func_name ..".lua"
+--local  package_name_conf = "sl_func_conf.lua"
+
 local package_file_list = {
   "sl_package_config.lua",
   "./lib/lib_file_log.lua",
   "./class/class_base_page.lua", 
   "./page/page_all_data.lua",    --放在page的第一位                 
   "./page/page_main.lua",             
-  "./page/page_suoyoulianxiren_del.lua",  
-  "./page/page_lianxirenxiangqing_del.lua",
-  "./page/page_suoyoulianxiren.lua",
+  "./page/page_suoyoulianxiren.lua",  
+  "./page/page_lianxirenxiangqing.lua",
   "./page/page_xinlianxiren.lua",
-  "main_add_contact.lua"
+  "func_phone_book_opt.lua"
 }
 
 function file_save_load(filename, file)
@@ -27,8 +29,8 @@ function start_package()
 	file:write("--                                             --\n");
 	file:write("--                                             --\n");
 	rightnow_data = os.date("%Y%m%d");   --得到当前日期和时间
-    rightnow_time = os.date("%H:%M:%S");
-    time = "--" .. rightnow_data .. "  " .. rightnow_time .. "     kobe package \n"
+  rightnow_time = os.date("%H:%M:%S");
+  time = "--" .. rightnow_data .. "  " .. rightnow_time .. "     kobe package \n"
 	file:write(time)
 	file:write("--                                             --\n");
 	file:write("--                                             --\n");

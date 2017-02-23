@@ -2,12 +2,12 @@
 --package.path=package.path .. ";/Users/huangyinke/Desktop/Code/lua/lua_server/scripts/add_contact/?.lua"
 --require "class_base_page"
 
-default_lianxirenxiangqing_del_page = {
-	page_name = "lianxirenxiangqing_del_page",
+default_lianxirenxiangqing_page = {
+	page_name = "lianxirenxiangqing_page",
 	page_image_path = nil
 }
 
-lianxirenxiangqing_del_page = class_base_page:new(default_lianxirenxiangqing_del_page);
+lianxirenxiangqing_page = class_base_page:new(default_lianxirenxiangqing_page);
 local function touch_middle()
     rotateScreen(0);
     mSleep(1600);
@@ -16,7 +16,7 @@ local function touch_middle()
     touchUp(4)
     mSleep(1000);
 end
-local function check_page_lianxirenxiangqing_del( ... )
+local function check_page_lianxirenxiangqing( ... )
     x, y = findMultiColorInRegionFuzzy({ 0xFFFFFF, 16, 1, 0x047CFF, 20, 1, 0x98C9FF, 29, 1, 0xFFFFFF, 45, 0, 0x5FABFF, 46, 6, 0xFFFFFF, 39, 11, 0xFFFFFF }, 90, 102, 186, 148, 197);
     if x ~= -1 and y ~= -1 then  -- 如果找到了
         return true;
@@ -25,41 +25,10 @@ local function check_page_lianxirenxiangqing_del( ... )
     end
 end
 
---step1
-function lianxirenxiangqing_del_page:enter()        --进入页面后的动作--
-    if true == self.check_page(self) then
-    	return self.action(self)
-    else
-        error_info("进入联系人详情 界面错误")
-        return false
-    end
 
-end
-
---step2
-function lianxirenxiangqing_del_page:check_page()  --检查是否是在当前页面--
-    print("lianxirenxiangqing_del_page:check_page");
-    print(self.page_name)
-    local try_time = 1
-    while 3 < try_time do
-        mSleep(1000*try_time);   --休眠一会会
-        if true ==  check_page_lianxirenxiangqing_del() then 
-            return true;
-        else          
-            try_time = try_time + 1;
-        end
-    end
-    return false;
-end
-
-function lianxirenxiangqing_del_page:quick_check_page()  --检查是否是在当前页面--
-    return check_page_lianxirenxiangqing_del()
-end
-
---step3  --最主要的工作都在这个里面
-function lianxirenxiangqing_del_page:action()     --执行这个页面的操作--
-    print("lianxirenxiangqing_del_page:check_page");
-    print(self.page_name)
+local function action_lianxirenxiangqing_delete()     --删除联系人操作--
+    print("lianxirenxiangqing_page:check_page");
+    --print(self.page_name)
 
     -----------滑倒最下面----
     touchDown(3, 406, 760)
@@ -175,10 +144,46 @@ function lianxirenxiangqing_del_page:action()     --执行这个页面的操作-
     touchUp(9)
     mSleep(1200);
     --进入“所有联系人”页面
-    page_array["page_suoyoulianxiren_del"]:enter();
+    page_array["page_suoyoulianxiren"]:enter();
     return true;
 end
 
-page_array["page_lianxirenxiangqing_del"] = lianxirenxiangqing_del_page:new()
+--step1
+function lianxirenxiangqing_page:enter()        --进入页面后的动作--
+    if true == self.check_page(self) then
+    	return self.action(self)
+    else
+        error_info("进入联系人详情 界面错误")
+        return false
+    end
 
---end page_lianxirenxiangqing_del.lua
+end
+
+--step2
+function lianxirenxiangqing_page:check_page()  --检查是否是在当前页面--
+    print("lianxirenxiangqing_page:check_page");
+    --print(self.page_name)
+    local try_time = 1
+    while 3 > try_time do
+        mSleep(1000*try_time);   --休眠一会会
+        if true ==  check_page_lianxirenxiangqing() then 
+            return true;
+        else          
+            try_time = try_time + 1;
+        end
+    end
+    return false;
+end
+
+function lianxirenxiangqing_page:quick_check_page()  --检查是否是在当前页面--
+    return check_page_lianxirenxiangqing()
+end
+
+--step3  --最主要的工作都在这个里面,做删除联系人的操作
+function lianxirenxiangqing_page:action()
+    return action_lianxirenxiangqing_delete();
+end
+
+page_array["page_lianxirenxiangqing"] = lianxirenxiangqing_page:new()
+
+--end page_lianxirenxiangqing.lua

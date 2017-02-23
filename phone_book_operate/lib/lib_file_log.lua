@@ -79,7 +79,6 @@ function writeStrToFile(mystring, file)
 end
 
 
-
 -----------------------------------------------------------------------log----------------------------------------
 --初始化log文件
 function logFileInit(log_file_name)   

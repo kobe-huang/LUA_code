@@ -16,19 +16,19 @@ end
 --step1
 function class_base_page:enter()        --进入页面后的动作--
     print("class_base_page:enter");
-    print(self.page_name);
+    --print(self.page_name);
 end
 
 --step2
 function class_base_page:check_page()  --检查是否是在当前页面--
     print("class_base_page:check_page");
-    print(self.page_name)
+    --print(self.page_name)
     return true;
 end
 
 function class_base_page:quick_check_page()  --快速检查页面--
     print("class_base_page:check_page");
-    print(self.page_name)
+    --print(self.page_name)
     return true;
 end
 
@@ -36,7 +36,7 @@ end
 --step3
 function class_base_page:action()     --执行这个页面的操作--
     print("class_base_page:check_page");
-    print(self.page_name)
+    --print(self.page_name)
     return true;
 end
 

@@ -38,6 +38,44 @@ local function check_page_suoyoulianxiren( ... )
     ]]--
 end
 
+local function action_suoyoulianxiren_delete()     --执行这个页面的操作--
+    print("suoyoulianxiren_del_page:check_page");
+    --print(self.page_name)
+    rotateScreen(0);
+    mSleep(424);
+    
+    touchDown(3, 348, 898) --按中间的“通讯录”
+    mSleep(153);
+    touchUp(3)
+    mSleep(1200);
+
+    touchDown(5, 532, 278) --点击“名字”
+    mSleep(127);
+    touchUp(5);
+    mSleep(1500);
+
+    touchDown(2, 600, 42)  --点击编辑
+    mSleep(159);
+    touchUp(2)
+    mSleep(1800);
+    --进入“所有联系详情-编辑”页面
+    page_array["page_lianxirenxiangqing_del"]:enter();
+    return true;
+end
+
+local function action_suoyoulianxiren_add()     --执行这个页面的操作--
+    print("suoyoulianxiren_page:check_page");
+    --print(self.page_name)
+    rotateScreen(0);
+    mSleep(424);
+    touchDown(3, 626, 58)
+    mSleep(68);
+    touchUp(3)
+    mSleep(1000);
+    page_array["page_xinlianxiren"]:enter();
+    return true;
+end
+
 --step1
 function suoyoulianxiren_page:enter()        --进入页面后的动作--
     if true == self.check_page(self) then
@@ -52,10 +90,10 @@ end
 --step2
 function suoyoulianxiren_page:check_page()  --检查是否是在当前页面--
     print("suoyoulianxiren_page:check_page");
-    print(self.page_name)
+    --print(self.page_name)
     --return check_page();
     local try_time = 1
-    while 3 < try_time do
+    while 3 > try_time do
          mSleep(1000*try_time);   --休眠一会会
         if true ==  check_page_suoyoulianxiren() then 
             return true;
@@ -72,8 +110,9 @@ end
 
 --step3  --最主要的工作都在这个里面
 function suoyoulianxiren_page:action()     --执行这个页面的操作--
+    --[[
     print("suoyoulianxiren_page:check_page");
-    print(self.page_name)
+    --print(self.page_name)
     rotateScreen(0);
     mSleep(424);
     touchDown(3, 626, 58)
@@ -82,6 +121,12 @@ function suoyoulianxiren_page:action()     --执行这个页面的操作--
     mSleep(1000);
     page_array["page_xinlianxiren"]:enter();
     return true;
+    --]]
+    if true == is_delete_contact then
+        return action_suoyoulianxiren_delete();
+    else
+        return action_suoyoulianxiren_add();
+    end
 end
 
 page_array["page_suoyoulianxiren"] = suoyoulianxiren_page:new()

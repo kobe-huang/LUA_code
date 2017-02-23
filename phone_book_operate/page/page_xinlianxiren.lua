@@ -20,49 +20,9 @@ local function check_page_xinlianxiren( ... )
     end
 end
 
-
---step1
-
-function xinlianxiren_page:enter()        --进入页面后的动作--
-    self.myindex = self.myindex + 1;
-    if self.myindex >= add_contact_num then
-        --os.exit(1)
-        error_info_exit("-----完成1000个----")
-    end
-    
-    if true == self.check_page(self) then
-    	return self.action(self)
-    else
-        error_info("进入新联系人 界面错误")
-    	return false
-    end
-end
-
---step2
-function xinlianxiren_page:check_page()  --检查是否是在当前页面--
+local function action_xinlianxiren_add()     --添加新的联系人--
     print("xinlianxiren_page:check_page");
-    print(self.page_name)
---    return check_page();
-    local try_time = 1
-    while 3 < try_time do
-        mSleep(1000*try_time);   --休眠一会会
-        if true ==  check_page_xinlianxiren() then 
-            return true;
-        else
-            try_time = try_time + 1;
-        end
-    end
-    return false;
-end
-
-function xinlianxiren_page:quick_check_page()  --快速检查是否是在当前页面--
-   return  check_page_xinlianxiren();     
-end
-
---step3  --最主要的工作都在这个里面
-function xinlianxiren_page:action()     --执行这个页面的操作--
-    print("xinlianxiren_page:check_page");
-    print(self.page_name)
+    --print(self.page_name)
     my_name, my_number = generate_contact_info(); --产生随机的信息
      
     rotateScreen(0);
@@ -216,9 +176,45 @@ function xinlianxiren_page:action()     --执行这个页面的操作--
     mSleep(186);
     touchUp(6)
     mSleep(1000);
-    page_array["page_suoyoulianxiren"]:enter();
-   
+    --page_array["page_suoyoulianxiren"]:enter();
     return true;
+end
+
+--step1
+
+function xinlianxiren_page:enter()        --进入页面后的动作--
+    if true == self.check_page(self) then
+    	return self.action(self)
+    else
+        error_info("进入新联系人 界面错误")
+    	return false
+    end
+end
+
+--step2
+function xinlianxiren_page:check_page()  --检查是否是在当前页面--
+    print("xinlianxiren_page:check_page");
+    --print(self.page_name)
+--    return check_page();
+    local try_time = 1
+    while 3 > try_time do
+        mSleep(1000*try_time);   --休眠一会会
+        if true ==  check_page_xinlianxiren() then 
+            return true;
+        else
+            try_time = try_time + 1;
+        end
+    end
+    return false;
+end
+
+function xinlianxiren_page:quick_check_page()  --快速检查是否是在当前页面--
+   return  check_page_xinlianxiren();     
+end
+
+--step3  --最主要的工作都在这个里面
+function xinlianxiren_page:action()
+    return action_xinlianxiren_add();
 end
 
 page_array["page_xinlianxiren"] =  xinlianxiren_page:new()
