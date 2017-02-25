@@ -29,7 +29,7 @@ end
 function auto_create_name(name)
 end
 
-function main_contact_opt() --添加或删除联系人主函数
+function phone_book_opt() --添加或删除联系人主函数
     ---mSleep(10000);
 	logFileInit(sl_log_file);
     local current_page = get_current_page(); --得到当前的page
@@ -44,7 +44,7 @@ end
 --在调试的时候，使用main函数封装，才能运行
 --function main()
     -- body
-    main_contact_opt();
+    phone_book_opt();
 --end
 
 

@@ -1,46 +1,15 @@
-------------------------sl_func_phone_book_opt.lua--------
---                                             --
---                                             --
---20170223  13:01:48     kobe package 
---                                             --
---                                             --
---                                             --
--------------------------------------------------
+------------sl_func_phone_book_opt.lua------------
+--                                              --
+--                                              --
+--20170224  12:51:09     kobe package 
+--                                              --
+--                                              --
+--                                              --
+--------------------------------------------------
 
 
 
 
-
-
-
-----------------------begin:  sl_package_config.lua---------------------------------
---begin sl_package_config.lua
-package.path=package.path .. ";/Users/huangyinke/Desktop/Code/lua/lua_server/scripts/add_contact/?.lua"
-package.path=package.path .. ";/private/var/touchelf/scripts/?.lua" .. ";/private/var/touchelf/scripts/sl/?.lua"
-local sl_globle_para = {  --全局变量
-	is_package = true;    --是否是打包的程序
-	package_info = "huangyike_V0.1"
-}
-
-
-
-sl_log_file       = "/private/var/touchelf/scripts/sl/sl_log.txt" --配置文件
-sl_error_time     = 1;  --容错处理
---end sl_package_config.lua
-is_delete_contact = false; --是否是执行删除操作
-
---全局配置参数
-pre_fix_phone_numb   = {1865571}--1388888, 1355555, 1344444,1366666}--号段前缀，可以添加多个号码段
-pre_fix_name = {"艾","毕","蔡","代","厄","方","甘","黄","马","赵","钱","孙","李","周","吴","郑","王"};
-
-
-
---mask_numb = 5   --尾后5位数，随机
---add_numb  = 50  --每次加的数目
---add_interval = 600;  --每次加号码后，休息的时间，单位秒
---del_contact_num = 10 --多少次后，直接删除所有的电话簿
---add_contact_num   = 4000;
-------------------end:  sl_package_config.lua-------------------------------------
 
 
 
@@ -319,14 +288,6 @@ default_main_page = {
 
 main_page = class_base_page:new(default_main_page);
 
-local function touch_middle()
-    rotateScreen(0);
-    mSleep(1600);
-    touchDown(4, 348, 896)
-    mSleep(240);
-    touchUp(4)
-    mSleep(1000);
-end
 local function check_page_main( ... )
 	x, y = findMultiColorInRegionFuzzy({ 0x4CB2DB, 7, 0, 
 		0x4CB1D9, 9, 0, 0x75C3E2, 12, 0, 
@@ -343,7 +304,7 @@ local function check_page_main( ... )
 	end
 end
 --操作电话本
-local function action_main_contact_opt() --执行这个页面的操作--
+local function action_phone_book_opt() --执行这个页面的操作--
     print("main_page:check_page");
     --print(self.page_name);
     rotateScreen(0);
@@ -403,7 +364,7 @@ end
 
 --step3  第三步执行操作，最主要的工作都在这个里面
 function main_page:action()
-    return action_main_contact_opt();
+    return action_phone_book_opt();
 end
 
 page_array["page_main"] = main_page:new()
@@ -424,14 +385,7 @@ default_suoyoulianxiren_page = {
 }
 
 suoyoulianxiren_page = class_base_page:new(default_suoyoulianxiren_page);
-local function touch_middle()
-    rotateScreen(0);
-    mSleep(1600);
-    touchDown(4, 348, 896)
-    mSleep(240);
-    touchUp(4)
-    mSleep(1000);
-end
+
 local function check_page_suoyoulianxiren( ... )
     x, y = findMultiColorInRegionFuzzy({ 0x007AFF, 1, -6, 0xF7F7F7, 6, -7, 
     0x007AFF, 12, -7, 0xF7F7F7, 7, 6, 
@@ -452,6 +406,20 @@ local function check_page_suoyoulianxiren( ... )
     end
     -- body
     ]]--
+end
+
+local function is_exsist_contact( ... ) --在做删除操作的时候。判断是否有通讯录
+    -- body
+    x, y = findMultiColorInRegionFuzzy({ 0xCCCCCC, 4, 0, 0xFFFFFF, 8, 1, 
+        0xCCCCCC, 11, 1, 0xCCCCCC, 15, -2, 
+        0xCCCCCC, 20, 1, 0xCCCCCC, 38, 2, 
+        0xCCCCCC, 47, 0, 0xCCCCCC }, 
+        90, 289, 696, 336, 700);
+    if x ~= -1 and y ~= -1 then  -- 如果找到了
+        return true;
+    else
+        return false;
+    end
 end
 
 local function action_suoyoulianxiren_delete()     --执行这个页面的操作--
@@ -475,7 +443,7 @@ local function action_suoyoulianxiren_delete()     --执行这个页面的操作
     touchUp(2)
     mSleep(1800);
     --进入“所有联系详情-编辑”页面
-    page_array["page_lianxirenxiangqing_del"]:enter();
+    page_array["page_lianxirenxiangqing"]:enter();
     return true;
 end
 
@@ -539,7 +507,13 @@ function suoyoulianxiren_page:action()     --执行这个页面的操作--
     return true;
     --]]
     if true == is_delete_contact then
-        return action_suoyoulianxiren_delete();
+        if true == is_exsist_contact() then
+            notifyMessage("联系人已经删完");
+            mSleep(3000);
+            return true;
+        else
+            return action_suoyoulianxiren_delete();
+        end
     else
         return action_suoyoulianxiren_add();
     end
@@ -564,14 +538,7 @@ default_lianxirenxiangqing_page = {
 }
 
 lianxirenxiangqing_page = class_base_page:new(default_lianxirenxiangqing_page);
-local function touch_middle()
-    rotateScreen(0);
-    mSleep(1600);
-    touchDown(4, 348, 896)
-    mSleep(240);
-    touchUp(4)
-    mSleep(1000);
-end
+
 local function check_page_lianxirenxiangqing( ... )
     x, y = findMultiColorInRegionFuzzy({ 0xFFFFFF, 16, 1, 0x047CFF, 20, 1, 0x98C9FF, 29, 1, 0xFFFFFF, 45, 0, 0x5FABFF, 46, 6, 0xFFFFFF, 39, 11, 0xFFFFFF }, 90, 102, 186, 148, 197);
     if x ~= -1 and y ~= -1 then  -- 如果找到了
@@ -700,7 +667,7 @@ local function action_lianxirenxiangqing_delete()     --删除联系人操作--
     touchUp(9)
     mSleep(1200);
     --进入“所有联系人”页面
-    page_array["page_suoyoulianxiren"]:enter();
+    --page_array["page_suoyoulianxiren"]:enter();
     return true;
 end
 
@@ -1008,7 +975,7 @@ end
 function auto_create_name(name)
 end
 
-function main_contact_opt() --添加或删除联系人主函数
+function phone_book_opt() --添加或删除联系人主函数
     ---mSleep(10000);
 	logFileInit(sl_log_file);
     local current_page = get_current_page(); --得到当前的page
@@ -1021,9 +988,10 @@ end
 
 --功能性脚本的入口程序，使用dofile调用
 --在调试的时候，使用main函数封装，才能运行
+--function main()
     -- body
-main_contact_opt();
-
+    phone_book_opt();
+--end
 
 
 --for i=1,20 do

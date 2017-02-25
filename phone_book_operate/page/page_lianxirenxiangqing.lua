@@ -8,14 +8,7 @@ default_lianxirenxiangqing_page = {
 }
 
 lianxirenxiangqing_page = class_base_page:new(default_lianxirenxiangqing_page);
-local function touch_middle()
-    rotateScreen(0);
-    mSleep(1600);
-    touchDown(4, 348, 896)
-    mSleep(240);
-    touchUp(4)
-    mSleep(1000);
-end
+
 local function check_page_lianxirenxiangqing( ... )
     x, y = findMultiColorInRegionFuzzy({ 0xFFFFFF, 16, 1, 0x047CFF, 20, 1, 0x98C9FF, 29, 1, 0xFFFFFF, 45, 0, 0x5FABFF, 46, 6, 0xFFFFFF, 39, 11, 0xFFFFFF }, 90, 102, 186, 148, 197);
     if x ~= -1 and y ~= -1 then  -- 如果找到了
@@ -144,7 +137,7 @@ local function action_lianxirenxiangqing_delete()     --删除联系人操作--
     touchUp(9)
     mSleep(1200);
     --进入“所有联系人”页面
-    page_array["page_suoyoulianxiren"]:enter();
+    --page_array["page_suoyoulianxiren"]:enter();
     return true;
 end
 

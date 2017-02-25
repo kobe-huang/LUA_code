@@ -8,14 +8,7 @@ default_suoyoulianxiren_page = {
 }
 
 suoyoulianxiren_page = class_base_page:new(default_suoyoulianxiren_page);
-local function touch_middle()
-    rotateScreen(0);
-    mSleep(1600);
-    touchDown(4, 348, 896)
-    mSleep(240);
-    touchUp(4)
-    mSleep(1000);
-end
+
 local function check_page_suoyoulianxiren( ... )
     x, y = findMultiColorInRegionFuzzy({ 0x007AFF, 1, -6, 0xF7F7F7, 6, -7, 
     0x007AFF, 12, -7, 0xF7F7F7, 7, 6, 
@@ -36,6 +29,20 @@ local function check_page_suoyoulianxiren( ... )
     end
     -- body
     ]]--
+end
+
+local function is_exsist_contact( ... ) --在做删除操作的时候。判断是否有通讯录
+    -- body
+    x, y = findMultiColorInRegionFuzzy({ 0xCCCCCC, 4, 0, 0xFFFFFF, 8, 1, 
+        0xCCCCCC, 11, 1, 0xCCCCCC, 15, -2, 
+        0xCCCCCC, 20, 1, 0xCCCCCC, 38, 2, 
+        0xCCCCCC, 47, 0, 0xCCCCCC }, 
+        90, 289, 696, 336, 700);
+    if x ~= -1 and y ~= -1 then  -- 如果找到了
+        return true;
+    else
+        return false;
+    end
 end
 
 local function action_suoyoulianxiren_delete()     --执行这个页面的操作--
@@ -59,7 +66,7 @@ local function action_suoyoulianxiren_delete()     --执行这个页面的操作
     touchUp(2)
     mSleep(1800);
     --进入“所有联系详情-编辑”页面
-    page_array["page_lianxirenxiangqing_del"]:enter();
+    page_array["page_lianxirenxiangqing"]:enter();
     return true;
 end
 
@@ -123,7 +130,13 @@ function suoyoulianxiren_page:action()     --执行这个页面的操作--
     return true;
     --]]
     if true == is_delete_contact then
-        return action_suoyoulianxiren_delete();
+        if true == is_exsist_contact() then
+            notifyMessage("联系人已经删完");
+            mSleep(3000);
+            return true;
+        else
+            return action_suoyoulianxiren_delete();
+        end
     else
         return action_suoyoulianxiren_add();
     end

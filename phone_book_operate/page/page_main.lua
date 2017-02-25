@@ -8,14 +8,6 @@ default_main_page = {
 
 main_page = class_base_page:new(default_main_page);
 
-local function touch_middle()
-    rotateScreen(0);
-    mSleep(1600);
-    touchDown(4, 348, 896)
-    mSleep(240);
-    touchUp(4)
-    mSleep(1000);
-end
 local function check_page_main( ... )
 	x, y = findMultiColorInRegionFuzzy({ 0x4CB2DB, 7, 0, 
 		0x4CB1D9, 9, 0, 0x75C3E2, 12, 0, 
@@ -32,7 +24,7 @@ local function check_page_main( ... )
 	end
 end
 --操作电话本
-local function action_main_contact_opt() --执行这个页面的操作--
+local function action_phone_book_opt() --执行这个页面的操作--
     print("main_page:check_page");
     --print(self.page_name);
     rotateScreen(0);
@@ -92,7 +84,7 @@ end
 
 --step3  第三步执行操作，最主要的工作都在这个里面
 function main_page:action()
-    return action_main_contact_opt();
+    return action_phone_book_opt();
 end
 
 page_array["page_main"] = main_page:new()
