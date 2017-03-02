@@ -1,18 +1,51 @@
 --begin lib_file_log.lua
 require "string"
---获取路径  
-function stripfilename(filename)
-    return string.match(filename, "(.+)/[^/]*%.%w+$") --*nix system  
-    --return string.match(filename, “(.+)\\[^\\]*%.%w+$”) — windows  
-end    
---获取文件名  
-function strippath(filename)  
-    return string.match(filename, ".+/([^/]*%.%w+)$") -- *nix system  
-    --return string.match(filename, “.+\\([^\\]*%.%w+)$”) — *nix system  
+--------------------------------文件地址操作-------
+--得到文件的全部路径
+function get_FILE_path( ... )
+    local __FILE__ = debug.getinfo(1,'S').source:sub(2)
+    return __FILE__;
+    -- body
+end
+
+--得到文件的路径
+function get_dir_name(str)  
+    if str:match(".-/.-") then  
+        local name = string.gsub(str, "(.*/)(.+)", "%1")  
+        return name  
+    elseif str:match(".-\\.-") then  
+        local name = string.gsub(str, "(.*\\)(.+)", "%1")  
+        return name  
+    else  
+        return nil
+    end  
 end  
 
---去除扩展名  
-function stripextension(filename)  
+--获取路径，去除文件名  
+function strip_file_name(filename)  --
+    if filename:match(".-/.-") then 
+        return string.match(filename, "(.+)/[^/]*%.%w+$")   --*nix system 
+    elseif filename:match(".-\\.-") then   
+        return string.match(filename, "(.+)\\[^\\]*%.%w+$") -- windows
+    else  
+        return nil
+    end   
+end    
+
+
+--获取文件名  ，去除文件路径  
+function strip_path(filename)
+    if filename:match(".-/.-") then 
+        return string.match(filename, ".+/([^/]*%.%w+)$")   -- *nix system  
+    elseif filename:match(".-\\.-") then   
+        return string.match(filename, ".+\\([^\\]*%.%w+)$") -- *nix system
+    else  
+        return nil
+    end    
+end  
+
+--去除扩展名 
+function strip_extension(filename)  
     local idx = filename:match(".+()%.%w+$")  
     if(idx) then  
         return filename:sub(1, idx-1)  
@@ -22,9 +55,13 @@ function stripextension(filename)
 end  
   
 --获取扩展名  
-function getextension(filename)  
+function get_extension(filename)  
     return filename:match(".+%.(%w+)$")  
 end  
+
+
+-----------------------------------------------------------
+
  
 --判断文件是否存在
 function file_exists(path)
@@ -84,7 +121,7 @@ end
 function logFileInit(log_file_name)   
     rightnow_data = os.date("%Y%m%d");   --得到当前日期和时间
     rightnow_time = os.date("%H:%M:%S");
-    local file_path = stripfilename(log_file_name)
+    local file_path = strip_file_name(log_file_name)
     if false == file_exists(file_path) then  --创建自己的临时文件夹
           os.execute("mkdir -p " .. file_path);
     end
@@ -127,20 +164,23 @@ function error_info(out_info)  ---错误处理函数
     mSleep(100);        --延时100毫秒
     keyUp('HOME');      -- HOME键抬起
     mSleep(5000);
-    sl_error_time = sl_error_time + 1;
-    if sl_error_time >= 30 then
-        error_info_exit("致命错误，退出---");
+    if nil ~= sl_error_time then
+        sl_error_time = sl_error_time + 1;
+        if sl_error_time >= 30 then
+            error_info_exit("致命错误，退出---");
+        else
+            page_array["page_main"]:enter();  --重新开始
+        end
     else
-        page_array["page_main"]:enter();  --重新开始
+        os.exit(1);
     end
     --os.exit(1);
 end
+--输出警告信息到文件
+function warning_info(out_info)  ---错误处理函数   
+    notifyMessage("警告：" .. out_info);
+    local time = get_local_time(); 
+    writeStrToFile("warning:  " .. time .. out_info , sl_log_file);    
+end
 
---[[
-local test_file = "http://oss.techouol.com/images/2/2016/12/YHLhGDDh0IGtSc30IE7i7TLC931T1d.jpg"
-print(stripfilename(test_file))
-print(strippath(test_file))
---]]
-
---function LogToFile
 --end lib_file_log.lua

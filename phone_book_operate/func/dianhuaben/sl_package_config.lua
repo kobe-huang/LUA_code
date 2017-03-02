@@ -24,3 +24,12 @@ pre_fix_name = {"艾","毕","蔡","代","厄","方","甘","黄","马","赵","钱
 --add_interval = 600;  --每次加号码后，休息的时间，单位秒
 --del_contact_num = 10 --多少次后，直接删除所有的电话簿
 --add_contact_num   = 4000;
+
+g_sl_account   = "kobe"
+g_sl_password  = "H11111111h"
+sl_fix_path    = "/private/var/touchelf/scripts/sl/"   
+sl_config_file = "/private/var/touchelf/scripts/sl/sl_config.txt" --配置文件
+
+--web服务器的地址
+default_server_addr = "http://120.76.215.162/sl_base/addons/xsy_resource/gettaskdemo.php?task="
+
