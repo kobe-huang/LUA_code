@@ -59,6 +59,34 @@ function get_extension(filename)
     return filename:match(".+%.(%w+)$")  
 end  
 
+--得到当前目录
+function get_current_dir(myfile)
+    -- body
+     --myfile = __FILE__;
+     if myfile:match(".-/.-") then  
+        local name = string.gsub(myfile, "(.*/)(.+)", "%1")  
+        return name  
+    elseif myfile:match(".-\\.-") then  
+        local name = string.gsub(myfile, "(.*\\)(.+)", "%1")  
+        return name  
+    else  
+        return nil
+    end  
+end
+
+--得到根目录
+function get_prj_root_dir(root_dir, num)  --往上num级目录
+    --local root_dir = __FILE__;
+    for i=1,num do
+        root_dir = get_dir_name(root_dir);
+        --print(root_dir);
+        root_dir = string.sub(root_dir, 1, -2)
+        --print(root_dir);
+        root_dir = root_dir .. ".del"
+    end
+    root_dir = get_dir_name(root_dir);
+    return root_dir;
+end
 
 -----------------------------------------------------------
 
@@ -147,10 +175,7 @@ function error_info_exit(out_info)  ---错误处理函数
     local time = get_local_time(); 
     writeStrToFile("fatal error:  " .. time .. out_info , sl_log_file); 
     notifyMessage(out_info);   
-    keyDown('HOME');    -- HOME键按下
-    mSleep(100);        --延时100毫秒
-    keyUp('HOME');      -- HOME键抬起
-    mSleep(5000);
+    mSleep(3000);
     --page_array["page_main"]:enter();  --重新开始
     os.execute("reboot");
     --os.exit(1);
@@ -160,9 +185,9 @@ function error_info(out_info)  ---错误处理函数
     local time = get_local_time(); 
     writeStrToFile("error:  " .. time .. out_info , sl_log_file); 
     notifyMessage(out_info);   
-    keyDown('HOME');    -- HOME键按下
+    keyDown('HOME');    --HOME键按下
     mSleep(100);        --延时100毫秒
-    keyUp('HOME');      -- HOME键抬起
+    keyUp('HOME');      --HOME键抬起
     mSleep(5000);
     if nil ~= sl_error_time then
         sl_error_time = sl_error_time + 1;
@@ -176,6 +201,8 @@ function error_info(out_info)  ---错误处理函数
     end
     --os.exit(1);
 end
+
+
 --输出警告信息到文件
 function warning_info(out_info)  ---错误处理函数   
     notifyMessage("警告：" .. out_info);

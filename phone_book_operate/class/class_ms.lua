@@ -71,7 +71,7 @@ end
 function class_base_ms:analy_server_data(task_info)
    
 	if "string" ~= type(task_info.data.TaskPath) or "number" ~= type(task_info.data.TaskId) then
-		error_info("接收服务器代码错误 ");
+		error_info("接收服务器代码错误! ");
 	end
 
 	local new_task_name   = strip_path(task_info.data.TaskPath);

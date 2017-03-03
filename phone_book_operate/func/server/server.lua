@@ -27,7 +27,7 @@ function init_sys()
 	if false == file_exists(sl_fix_path) then  --创建脚本文件夹
           os.execute("mkdir -p " .. sl_fix_path);
     end
-	logFileInit(); --log文件
+	logFileInit(sl_log_file); --初始化log文件
     if true ~= init_ms() then
     	error_info("初始化手机错误！");
     end  
@@ -35,7 +35,7 @@ function init_sys()
 end
 
 notifyMessage( "开始执行服务器脚本" );
-mSleep(5000);
+--mSleep(5000);
 
 function main()
 	--assert(false, "sdsdiahiuu")
