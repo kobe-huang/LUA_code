@@ -42,7 +42,7 @@ local function action_phone_book_opt() --执行这个页面的操作--
 --    if true == is_delete_contact then
 --        page_array["page_suoyoulianxiren_del"]:enter(); --清除所有联系人
 --    else
-        page_array["page_suoyoulianxiren"]:enter(); --添加联系人
+    page_array["page_suoyoulianxiren"]:enter(); --添加联系人
 --    end
     return true;
 end
@@ -56,7 +56,8 @@ function main_page:enter()        --进入页面后的动作--
     if true == self.check_page(self) then
     	return self.action(self)
     else
-    	error_info("进入主界面错误")
+    	--error_info("进入主界面错误")
+        self:error_handling();
     	return false
     end
 

@@ -34,8 +34,8 @@ function init_sys()
     return true;
 end
 
-notifyMessage( "开始执行服务器脚本" );
---mSleep(5000);
+notifyMessage( "开始执行服务器脚本");	--会延迟1s
+mSleep(1200);
 
 function main()
 	--assert(false, "sdsdiahiuu")

@@ -88,7 +88,8 @@ function suoyoulianxiren_page:enter()        --进入页面后的动作--
     if true == self.check_page(self) then
     	return self.action(self)
     else
-        error_info("进入所有联系人 界面错误")
+        --error_info("进入所有联系人 界面错误")
+        self:error_handling();
         return false
     end
 
@@ -131,8 +132,7 @@ function suoyoulianxiren_page:action()     --执行这个页面的操作--
     --]]
     if true == is_delete_contact then
         if true == is_exsist_contact() then
-            notifyMessage("联系人已经删完");
-            mSleep(3000);
+            warning_info("联系人已经删完");         
             return true;
         else
             return action_suoyoulianxiren_delete();

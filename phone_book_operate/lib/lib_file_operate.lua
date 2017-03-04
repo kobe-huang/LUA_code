@@ -144,7 +144,7 @@ function writeStrToFile(mystring, file)
 end
 
 
------------------------------------------------------------------------log----------------------------------------
+--------------------------------------------------------------log----------------------------------------
 --初始化log文件
 function logFileInit(log_file_name)   
     rightnow_data = os.date("%Y%m%d");   --得到当前日期和时间
@@ -154,6 +154,10 @@ function logFileInit(log_file_name)
           os.execute("mkdir -p " .. file_path);
     end
     writeStrToFile(rightnow_data .. " " .. rightnow_time .. "   ++++begin+++", log_file_name); 
+end
+
+if sl_log_file == nil then  --设置默认log文件
+    sl_log_file = "/private/var/touchelf/scripts/sl/sl_log.txt";
 end
 
 --得到本机当前时间
@@ -174,27 +178,25 @@ end
 function error_info_exit(out_info)  ---错误处理函数   
     local time = get_local_time(); 
     writeStrToFile("fatal error:  " .. time .. out_info , sl_log_file); 
-    notifyMessage(out_info);   
+    notifyMessage("致命错误：".. out_info);   
     mSleep(3000);
     --page_array["page_main"]:enter();  --重新开始
     os.execute("reboot");
     --os.exit(1);
 end
 
+error_time = 1;
 function error_info(out_info)  ---错误处理函数   
     local time = get_local_time(); 
     writeStrToFile("error:  " .. time .. out_info , sl_log_file); 
-    notifyMessage(out_info);   
-    keyDown('HOME');    --HOME键按下
-    mSleep(100);        --延时100毫秒
-    keyUp('HOME');      --HOME键抬起
-    mSleep(5000);
+    notifyMessage("错误：" .. out_info);
+    mSleep(1200);
     if nil ~= sl_error_time then
-        sl_error_time = sl_error_time + 1;
-        if sl_error_time >= 30 then
-            error_info_exit("致命错误，退出---");
+        error_time = error_time + 1;
+        if error_time >= sl_error_time then
+            error_info_exit("错误次数太多");
         else
-            page_array["page_main"]:enter();  --重新开始
+           -- page_array["page_main"]:enter();  --重新开始
         end
     else
         os.exit(1);
@@ -202,10 +204,10 @@ function error_info(out_info)  ---错误处理函数
     --os.exit(1);
 end
 
-
 --输出警告信息到文件
 function warning_info(out_info)  ---错误处理函数   
     notifyMessage("警告：" .. out_info);
+    mSleep(1200);
     local time = get_local_time(); 
     writeStrToFile("warning:  " .. time .. out_info , sl_log_file);    
 end

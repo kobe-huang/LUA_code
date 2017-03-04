@@ -134,8 +134,8 @@ function class_base_ms:get_task()
 	--得到服务器信息后处理--
 	if nil ~= task_info and false ~= task_info then--如果是有效数据
 		if task_info.Code == 101 then              --判断是否是正确的代码 
-			return self.analy_server_data(self,task_info) --注意这个地方，必须加self，因为不是 “：”调用。 by kobe
-			                                              --或者改成 self:analy_server_data(task_info)
+			--return self.analy_server_data(self,task_info) --注意这个地方，必须加self，因为不是 “：”调用。 by kobe
+			return self:analy_server_data(task_info)                                              --或者改成 self:analy_server_data(task_info)
             --[[
             if "string" ~= type(task_info.data.TaskPath) or "number" ~= type(task_info.data.TaskId) then
                 error_info("接收服务器代码错误 ");

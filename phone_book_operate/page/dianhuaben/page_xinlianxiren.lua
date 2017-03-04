@@ -186,7 +186,8 @@ function xinlianxiren_page:enter()        --进入页面后的动作--
     if true == self.check_page(self) then
     	return self.action(self)
     else
-        error_info("进入新联系人 界面错误")
+        --error_info("进入新联系人 界面错误")
+        self:error_handling();
     	return false
     end
 end
