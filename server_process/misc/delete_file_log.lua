@@ -1,3 +1,4 @@
+--begin lib_file_log.lua
 require "string"
 --获取路径  
 function stripfilename(filename)
@@ -79,18 +80,17 @@ function writeStrToFile(mystring, file)
     f:close();
 end
 
--------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------log----------------------------------------
 --初始化log文件
-function logFileInit()   
+function logFileInit(log_file_name)   
     rightnow_data = os.date("%Y%m%d");   --得到当前日期和时间
     rightnow_time = os.date("%H:%M:%S");
-    local file_path = stripfilename(sl_log_file)
+    local file_path = stripfilename(log_file_name)
     if false == file_exists(file_path) then  --创建自己的临时文件夹
           os.execute("mkdir -p " .. file_path);
     end
-    writeStrToFile(rightnow_data .. " " .. rightnow_time .. "   ++++begin+++", sl_log_file); 
+    writeStrToFile(rightnow_data .. " " .. rightnow_time .. "   ++++begin+++", log_file_name); 
 end
---function LogToFile
 
 --得到本机当前时间
 function get_local_time()
@@ -100,7 +100,25 @@ function get_local_time()
     return my_time;
 end 
 
---输出错误信息到文件
+--输出信息到文件
+function log_info(out_info)  ---错误处理函数   
+    --notifyMessage(out_info);
+    local time = get_local_time(); 
+    writeStrToFile("info:  " .. time .. out_info , sl_log_file);    
+end
+
+function error_info_exit(out_info)  ---错误处理函数   
+    local time = get_local_time(); 
+    writeStrToFile("fatal error:  " .. time .. out_info , sl_log_file); 
+    notifyMessage(out_info);   
+    keyDown('HOME');    -- HOME键按下
+    mSleep(100);        --延时100毫秒
+    keyUp('HOME');      -- HOME键抬起
+    mSleep(5000);
+    --page_array["page_main"]:enter();  --重新开始
+    os.execute("reboot");
+    --os.exit(1);
+end
 function error_info(out_info)  ---错误处理函数   
     local time = get_local_time(); 
     writeStrToFile("error:  " .. time .. out_info , sl_log_file); 
@@ -109,16 +127,13 @@ function error_info(out_info)  ---错误处理函数
     mSleep(100);        --延时100毫秒
     keyUp('HOME');      -- HOME键抬起
     mSleep(5000);
-    os.exit(1);
-    --os.execute("reboot"); --直接重启
-    --os
-end
-
---输出信息到文件
-function log_info(out_info)  ---错误处理函数   
-    --notifyMessage(out_info);
-    local time = get_local_time(); 
-    writeStrToFile("info:  " .. time .. out_info , sl_log_file);    
+    sl_error_time = sl_error_time + 1;
+    if sl_error_time >= 30 then
+        error_info_exit("致命错误，退出---");
+    else
+        page_array["page_main"]:enter();  --重新开始
+    end
+    --os.exit(1);
 end
 
 --输出警告信息到文件
