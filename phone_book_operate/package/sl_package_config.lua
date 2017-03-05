@@ -7,4 +7,6 @@ sl_globle_para = {  --全局变量
 	package_info = "huangyike_V0.1"
 }
 
+__DEBUG__ = false -- debug 开关
+
 --end sl_package_config.lua--

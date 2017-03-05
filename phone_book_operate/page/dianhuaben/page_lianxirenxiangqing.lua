@@ -147,7 +147,7 @@ function lianxirenxiangqing_page:enter()        --进入页面后的动作--
     	return self.action(self)
     else
         --error_info("进入联系人详情 界面错误")
-        self:error_handling();
+        self:error_handle();
         return false
     end
 

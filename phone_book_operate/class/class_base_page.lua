@@ -48,7 +48,7 @@ function class_base_page:get_page_name()  --得到这个页面的名字
 end
 --
 
-function class_base_page:error_handling()  --在这个页面的错误处理
+function class_base_page:error_handle()  --在这个页面的错误处理
     -- body
     if self.page_error_code == 101 then    --默认错误处理，按返回键
         keyDown('HOME');    --HOME键按下

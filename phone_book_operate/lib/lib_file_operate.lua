@@ -75,7 +75,7 @@ function get_current_dir(myfile)
 end
 
 --得到根目录
-function get_prj_root_dir(root_dir, num)  --往上num级目录
+function get_prj_root_dir(root_dir, num)  --当前目录，往上num级目录
     --local root_dir = __FILE__;
     for i=1,num do
         root_dir = get_dir_name(root_dir);
