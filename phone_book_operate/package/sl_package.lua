@@ -21,7 +21,7 @@ end
 
 
 function start_package(func_name, root_dir, package_file_list) 
-  local  package_name = "sl_function_" .. func_name ..".lua"
+  local  package_name = "sl_func_" .. func_name ..".lua"
   file = io.open(package_name,"w");  --覆盖文件
   file:write("------------" .. package_name .."------------\n"); --12个横杠
   local file_len = string.len(package_name) + 20;

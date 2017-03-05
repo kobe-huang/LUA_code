@@ -7,7 +7,7 @@ function generate_contact_info() --产生随机号码
     x = (xx * 100000) + x
 
     local  y = tostring(x)
-    y = string.sub(y, -3, -1)
+    y = string.sub(y, -3, -1) --取最后的3位数
 
     local my_name = pre_fix_name[math.random(#pre_fix_name)] .. y
     x = tostring(x)
