@@ -16,7 +16,7 @@ function init_ms()
 	o.base_info.ms_pwd  =   g_sl_password;
 	
 	sl_ms = class_base_ms:new(o);
-	--print(sl_ms.now_task_info.ms_stg_id)
+	--print(sl_ms.current_task_info.ms_stg_id)
 	--print(sl_ms.base_info.ms_id )
 	return true;
 end

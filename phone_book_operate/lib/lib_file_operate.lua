@@ -153,7 +153,8 @@ function logFileInit(log_file_name)
     if false == file_exists(file_path) then  --创建自己的临时文件夹
           os.execute("mkdir -p " .. file_path);
     end
-    writeStrToFile(rightnow_data .. " " .. rightnow_time .. "   ++++begin+++", log_file_name); 
+    --writeStrToFile(rightnow_data .. " " .. rightnow_time .. "   ++++begin+++", log_file_name); 
+    sl_log_file = log_file_name;
 end
 
 if sl_log_file == nil then  --设置默认log文件

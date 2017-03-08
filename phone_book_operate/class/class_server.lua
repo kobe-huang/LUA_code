@@ -1,3 +1,4 @@
+--begin class_server.lia---------------------
 --服务器返回的数据：
 --{Code = 101, Message = "OK", 
 --data = {Strategy_ID = 40003, TaskDataID = 50003, 
@@ -80,7 +81,7 @@ function class_base_server:get_file(local_path,sl_url)
     while 5 >= try_time do
         os.execute("curl -o " .. local_path .." " .. sl_url)
         mSleep(1000*try_time);  --时间逐步加长
-        if true == file_exists(local_path) then
+        if true == file_exists(local_path) then --只看是否下载下来
             return true;
         else
             try_time = try_time + 1;
@@ -138,3 +139,4 @@ function class_base_server:get_file(local_path,sl_url)
     return true;
 end
 ]]
+--end class_server.lia ---------------------

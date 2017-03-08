@@ -1,10 +1,10 @@
-default_ms_task_info = {
+default_ms_task_info = { --任务的掩码
 	ms_stg_id = 40000
     , ms_task_id = 50000
     , ms_task_d_id = 50000
 };
 
----------------------------------------------------------------------ms 对象--------------------
+-----------------------------------------------------------------ms 对象--------------------
 --发送给服务器的数据--
 class_base_ms = {
     base_info = {	--json格式的数据
@@ -14,13 +14,13 @@ class_base_ms = {
 	    ,ms_pwd = "H11111111h"
 	    ,ms_token = "shunliantianxia12345"
 	},
-    now_task_info = {
-		ms_stg_id = 40000     --策略ID
+    current_task_info = {
+		ms_stg_id    = 40000  --策略ID
 	    , ms_task_id = 50000  --任务ID
 	    , ms_task_name = "test_task_0.lua" --任务名称
 	    , ms_task_index = 5   --任务序号
 	    , ms_task_d_id = 50000
-	    , ms_task_d_name = "test_task_date_0.lua"
+	    , ms_task_d_name = "test_task_date_0.lua"  --当前执行的任务
 	}
 } 
 
@@ -29,7 +29,7 @@ function class_base_ms:new(o)
     o = o or {} --如果参数中没有提供table，则创建一个空的。
     setmetatable(o,self)
     self.__index = self
-    self.server = class_base_server:new()  
+    self.server = class_base_server:new() --初始化服务器对象  
     return o    --最后返回构造后的对象实例
 end
 
@@ -45,12 +45,12 @@ end
 
 --执行任务--
 function class_base_ms:run_task() 
-	local my_taskname    = self.now_task_info.ms_task_name;
-	local my_task_d_name = self.now_task_info.ms_task_d_name;
+	local my_task_name    = self.current_task_info.ms_task_name;
+	local my_task_d_name  = self.current_task_info.ms_task_d_name;
 
-    my_taskname = sl_fix_path .. my_taskname
-    if false == file_exists(my_taskname) then
-    	warning_info("文件不存在" .. my_taskname);
+    my_task_name = sl_fix_path .. my_task_name
+    if false == file_exists(my_task_name) then
+    	warning_info("文件不存在" .. my_task_name);
     	return false;
     end
 
@@ -58,13 +58,13 @@ function class_base_ms:run_task()
         my_task_d_name   = sl_fix_path .. my_task_d_name
     end
 
-    if nil == self.now_task_info.ms_task_d_name or  false == file_exists(my_task_d_name)  then  --脚本数据
+    if nil == self.current_task_info.ms_task_d_name or false == file_exists(my_task_d_name)  then  --脚本数据
         --do-nothing
     else
         dofile(my_task_d_name) --加载脚本的数据
     end
 	--require "taskname执行脚本"
-    dofile(my_taskname) --执行脚本
+    dofile(my_task_name) --执行脚本
 end
 
 --分析从服务器得到的信息
@@ -92,12 +92,12 @@ function class_base_ms:analy_server_data(task_info)
 		--mSleep(1000);
 	end
 	
-	self.now_task_info.ms_task_id    = task_info.data.TaskId;
-	self.now_task_info.ms_task_name  = new_task_name;
-	self.now_task_info.ms_stg_id     = task_info.data.Strategy_ID;
+	self.current_task_info.ms_task_id    = task_info.data.TaskId;
+	self.current_task_info.ms_task_name  = new_task_name;
+	self.current_task_info.ms_stg_id     = task_info.data.Strategy_ID;
 	
-	self.now_task_info.ms_task_d_name = new_task_data_name; --task_info.data.TaskDataPath;
-	self.now_task_info.ms_task_d_id   = task_info.data.TaskDataID 
+	self.current_task_info.ms_task_d_name = new_task_data_name; --task_info.data.TaskDataPath;
+	self.current_task_info.ms_task_d_id   = task_info.data.TaskDataID 
     return true;
 end
 
@@ -115,7 +115,7 @@ function class_base_ms:get_task()
 		--table.insert(mydata, k, v)
         mydata[k] = v;
 	end
-	for k,v in pairs(self.now_task_info) do
+	for k,v in pairs(self.current_task_info) do
 		mydata[k] = v;
 	end
 
@@ -148,11 +148,11 @@ function class_base_ms:get_task()
                 mSleep(1000);
             end
             --self.run_task(new_task_name); --运行程序
-            self.now_task_info.ms_task_id = task_info.data.TaskId;
-            self.now_task_info.ms_task_name  = new_task_name;
-            self.now_task_info.ms_stg_id  = task_info.data.Strategy_ID;
-            --self.now_task_info.ms_task_d_name = 
-            --self.now_task_info.ms_task_d_id = 
+            self.current_task_info.ms_task_id = task_info.data.TaskId;
+            self.current_task_info.ms_task_name  = new_task_name;
+            self.current_task_info.ms_stg_id  = task_info.data.Strategy_ID;
+            --self.current_task_info.ms_task_d_name = 
+            --self.current_task_info.ms_task_d_id = 
             return true;
             --]]
 		else
