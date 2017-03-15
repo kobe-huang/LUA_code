@@ -61,7 +61,7 @@ function class_base_server:send_info(sl_data)
     local raw_json_text = (self.JSON):encode(sl_data)  
     local xxxx = self.server_addr .. raw_json_text;
     local mydata = httpGet(xxxx); --检查mydata的有效性
-    mSleep(1000);
+    --mSleep(1000);
     if nil == mydata then         --判断返回的数据是否正常
         return false
     else

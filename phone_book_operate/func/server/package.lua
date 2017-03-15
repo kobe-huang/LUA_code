@@ -4,6 +4,7 @@
  __FILE__ = debug.getinfo(1,'S').source:sub(2) --当前的文件全路径
 
 package_file_list = {
+ "func/server/config.lua", 
   "lib/lib_JSON.lua",
   "lib/lib_file_operate.lua",
   "misc/ms_info.lua",

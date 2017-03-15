@@ -50,7 +50,7 @@ function main()
 		--sl_ms
 		if true == sl_ms:get_task() then
 			sl_ms:run_task();
-			mSleep(1000);
+			mSleep(100);
 		else
 			error_info("运行脚本错误！");
 		end
