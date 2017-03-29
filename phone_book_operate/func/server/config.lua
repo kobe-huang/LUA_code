@@ -1,7 +1,7 @@
 sl_log_file       = "/private/var/touchelf/scripts/sl/sl_log.txt" --配置文件
 --sl_error_time     = 1;  --容错处理,  现在不做容错处理。
 
-g_sl_account   = "kobe"
+g_sl_account   = "kobe_test"
 g_sl_password  = "H11111111h"
 sl_fix_path    = "/private/var/touchelf/scripts/sl/"   
 sl_config_file = "/private/var/touchelf/scripts/sl/sl_config.txt" --配置文件

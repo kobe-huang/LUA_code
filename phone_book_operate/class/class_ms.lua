@@ -21,6 +21,7 @@ class_base_ms = {
 	    , ms_task_index = 5   --任务序号
 	    , ms_task_d_id = 50000
 	    , ms_task_d_name = "test_task_date_0.lua"  --当前执行的任务
+	    , ms_user_config = "xxx.lua"  ---用户的数据
 	}
 } 
 
@@ -47,6 +48,7 @@ end
 function class_base_ms:run_task() 
 	local my_task_name    = self.current_task_info.ms_task_name;
 	local my_task_d_name  = self.current_task_info.ms_task_d_name;
+	local my_user_config  = self.current_task_info.ms_user_config;
 
     my_task_name = sl_fix_path .. my_task_name
     if false == file_exists(my_task_name) then
@@ -54,6 +56,7 @@ function class_base_ms:run_task()
     	return false;
     end
 
+--------------------
     if nil ~= my_task_d_name then
         my_task_d_name   = sl_fix_path .. my_task_d_name
     end
@@ -63,6 +66,17 @@ function class_base_ms:run_task()
     else
         dofile(my_task_d_name) --加载脚本的数据
     end
+-------------------
+    if nil ~= my_user_config then
+        my_user_config   = sl_fix_path .. my_user_config
+    end
+
+    if nil == self.current_task_info.my_user_config or false == file_exists(my_user_config)  then  --脚本数据
+        --do-nothing
+    else
+        dofile(my_user_config) --加载脚本的数据
+    end
+-------------
 	--require "taskname执行脚本"
     dofile(my_task_name) --执行脚本
 end
@@ -76,12 +90,24 @@ function class_base_ms:analy_server_data(task_info)
 
 	local new_task_name   = strip_path(task_info.data.TaskPath);
 	local local_task_file = sl_fix_path .. new_task_name;
-	local new_task_data_name   = strip_path(task_info.data.TaskDataPath);
+	
+	local new_task_data_name   = nil 
+	if "string" == type(task_info.data.TaskDataPath) then new_task_data_name =  strip_path(task_info.data.TaskDataPath) end
+	local new_user_config 	   = nil 
+	if "string" == type(task_info.data.user_config_path) then new_user_config =  strip_path(task_info.data.user_config_path) end
+	
+
+
 	local local_task_data_file = nil
     if nil ~= new_task_data_name then
         local_task_data_file = sl_fix_path .. new_task_data_name;
     end
     
+    local local_user_config_file = nil
+    if nil ~= new_user_config then
+        local_user_config_file = sl_fix_path .. new_user_config;
+    end
+
 	if false == file_exists(local_task_file) then                       --看本地是否存在
 		self.server:get_file(local_task_file, task_info.data.TaskPath); --下载脚本
 		--mSleep(1000);
@@ -90,14 +116,21 @@ function class_base_ms:analy_server_data(task_info)
 	if nil ~= new_task_data_name and false == file_exists(local_task_data_file) then    --看本地是否存在
 		self.server:get_file(local_task_data_file, task_info.data.TaskDataPath); --下载脚本数据
 		--mSleep(1000);
+	end	
+
+	if nil ~= new_user_config and false == file_exists(local_user_config_file) then    --看本地是否存在
+		self.server:get_file(local_user_config_file, task_info.data.user_config_path); --下载用户配置数据
+		--mSleep(1000);
 	end
-	
+
 	self.current_task_info.ms_task_id    = task_info.data.TaskId;
 	self.current_task_info.ms_task_name  = new_task_name;
 	self.current_task_info.ms_stg_id     = task_info.data.Strategy_ID;
 	
 	self.current_task_info.ms_task_d_name = new_task_data_name; --task_info.data.TaskDataPath;
-	self.current_task_info.ms_task_d_id   = task_info.data.TaskDataID 
+	self.current_task_info.ms_task_d_id   = task_info.data.TaskDataID; 
+
+	self.current_task_info.ms_user_config = new_user_config;
     return true;
 end
 
