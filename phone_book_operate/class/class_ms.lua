@@ -71,7 +71,7 @@ function class_base_ms:run_task()
         my_user_config   = sl_fix_path .. my_user_config
     end
 
-    if nil == self.current_task_info.my_user_config or false == file_exists(my_user_config)  then  --脚本数据
+    if nil == self.current_task_info.ms_user_config or false == file_exists(my_user_config)  then  --脚本数据
         --do-nothing
     else
         dofile(my_user_config) --加载脚本的数据
@@ -124,12 +124,11 @@ function class_base_ms:analy_server_data(task_info)
 	end
 
 	self.current_task_info.ms_task_id    = task_info.data.TaskId;
-	self.current_task_info.ms_task_name  = new_task_name;
+	self.current_task_info.ms_task_d_id  = task_info.data.TaskDataID; 
 	self.current_task_info.ms_stg_id     = task_info.data.Strategy_ID;
 	
+	self.current_task_info.ms_task_name   = new_task_name;	
 	self.current_task_info.ms_task_d_name = new_task_data_name; --task_info.data.TaskDataPath;
-	self.current_task_info.ms_task_d_id   = task_info.data.TaskDataID; 
-
 	self.current_task_info.ms_user_config = new_user_config;
     return true;
 end
