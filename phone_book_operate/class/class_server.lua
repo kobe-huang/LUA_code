@@ -9,15 +9,15 @@
 base_return_info = {
     Code = 101,
     data = {
-          Message = "成功"
-        , TskId = 50001
-        , TskPath = "http://oss.techouol.com/images/2/2016/12/YHLhGDDh0IGtSc30IE7i7TLC931T1d.jpg"
-        , TskDataID = 50003
-        , TskDataPath = "http://oss.techouol.com/images/2/2016/12/YHLhGDDh0IGtSc30IE7i7TLC931T1d.jpg"
-        , StgID = 40003
+          message = "成功"
+        , task_id = 50001
+        , task_path = "http://oss.techouol.com/images/2/2016/12/YHLhGDDh0IGtSc30IE7i7TLC931T1d.jpg"
+        , task_data_id = 50003
+        , task_data_path = "http://oss.techouol.com/images/2/2016/12/YHLhGDDh0IGtSc30IE7i7TLC931T1d.jpg"
+        , strategy_id = 40003
     }
 }
-
+--默认的参数
 class_base_server = {
     server_addr = default_server_addr,
 } 

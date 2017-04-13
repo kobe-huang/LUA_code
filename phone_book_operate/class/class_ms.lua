@@ -1,7 +1,7 @@
 default_ms_task_info = { --任务的掩码
 	ms_stg_id = 40000
     , ms_task_id = 50000
-    , ms_task_d_id = 50000
+    , ms_task_data_id = 50000
 };
 
 -----------------------------------------------------------------ms 对象--------------------
@@ -19,8 +19,8 @@ class_base_ms = {
 	    , ms_task_id = 50000  --任务ID
 	    , ms_task_name = "test_task_0.lua" --任务名称
 	    , ms_task_index = 5   --任务序号
-	    , ms_task_d_id = 50000
-	    , ms_task_d_name = "test_task_date_0.lua"  --当前执行的任务
+	    , ms_task_data_id = 50000
+	    , ms_task_data_name = "test_task_date_0.lua"  --当前执行的任务
 	    , ms_user_config = "xxx.lua"  ---用户的数据
 	}
 } 
@@ -47,7 +47,7 @@ end
 --执行任务--
 function class_base_ms:run_task() 
 	local my_task_name    = self.current_task_info.ms_task_name;
-	local my_task_d_name  = self.current_task_info.ms_task_d_name;
+	local my_task_data_name  = self.current_task_info.ms_task_data_name;
 	local my_user_config  = self.current_task_info.ms_user_config;
 
     my_task_name = sl_fix_path .. my_task_name
@@ -57,14 +57,14 @@ function class_base_ms:run_task()
     end
 
 --------------------
-    if nil ~= my_task_d_name then
-        my_task_d_name   = sl_fix_path .. my_task_d_name
+    if nil ~= my_task_data_name then
+        my_task_data_name   = sl_fix_path .. my_task_data_name
     end
 
-    if nil == self.current_task_info.ms_task_d_name or false == file_exists(my_task_d_name)  then  --脚本数据
+    if nil == self.current_task_info.ms_task_data_name or false == file_exists(my_task_data_name)  then  --脚本数据
         --do-nothing
     else
-        dofile(my_task_d_name) --加载脚本的数据
+        dofile(my_task_data_name) --加载脚本的数据
     end
 -------------------
     if nil ~= my_user_config then
@@ -84,15 +84,15 @@ end
 --分析从服务器得到的信息
 function class_base_ms:analy_server_data(task_info)
    
-	if "string" ~= type(task_info.data.TaskPath) or "number" ~= type(task_info.data.TaskId) then
+	if "string" ~= type(task_info.data.task_path) or "number" ~= type(task_info.data.task_id) then
 		error_info("接收服务器代码错误! ");
 	end
 
-	local new_task_name   = strip_path(task_info.data.TaskPath);
+	local new_task_name   = strip_path(task_info.data.task_path);
 	local local_task_file = sl_fix_path .. new_task_name;
 	
 	local new_task_data_name   = nil 
-	if "string" == type(task_info.data.TaskDataPath) then new_task_data_name =  strip_path(task_info.data.TaskDataPath) end
+	if "string" == type(task_info.data.task_data_path) then new_task_data_name =  strip_path(task_info.data.task_data_path) end
 	local new_user_config 	   = nil 
 	if "string" == type(task_info.data.user_config_path) then new_user_config =  strip_path(task_info.data.user_config_path) end
 	
@@ -109,12 +109,12 @@ function class_base_ms:analy_server_data(task_info)
     end
 
 	if false == file_exists(local_task_file) then                       --看本地是否存在
-		self.server:get_file(local_task_file, task_info.data.TaskPath); --下载脚本
+		self.server:get_file(local_task_file, task_info.data.task_path); --下载脚本
 		--mSleep(1000);
 	end
 
 	if nil ~= new_task_data_name and false == file_exists(local_task_data_file) then    --看本地是否存在
-		self.server:get_file(local_task_data_file, task_info.data.TaskDataPath); --下载脚本数据
+		self.server:get_file(local_task_data_file, task_info.data.task_data_path); --下载脚本数据
 		--mSleep(1000);
 	end	
 
@@ -123,13 +123,17 @@ function class_base_ms:analy_server_data(task_info)
 		--mSleep(1000);
 	end
 
-	self.current_task_info.ms_task_id    = task_info.data.TaskId;
-	self.current_task_info.ms_task_d_id  = task_info.data.TaskDataID; 
-	self.current_task_info.ms_stg_id     = task_info.data.Strategy_ID;
-	
+	self.current_task_info.ms_task_id    = task_info.data.task_id;
+	self.current_task_info.ms_task_data_id  = task_info.data.task_data_id; 
+	self.current_task_info.ms_stg_id     = task_info.data.strategy_id;
+
 	self.current_task_info.ms_task_name   = new_task_name;	
-	self.current_task_info.ms_task_d_name = new_task_data_name; --task_info.data.TaskDataPath;
+	self.current_task_info.ms_task_data_name = new_task_data_name; --task_info.data.TaskDataPath;
 	self.current_task_info.ms_user_config = new_user_config;
+
+	if "string" == type(task_info.data.token) then  --加上token，先要看是否有token
+		self.base_info.ms_token		  = task_info.data.token;
+	end
     return true;
 end
 
@@ -147,9 +151,9 @@ function class_base_ms:get_task()
 		--table.insert(mydata, k, v)
         mydata[k] = v;
 	end
-	for k,v in pairs(self.current_task_info) do
-		mydata[k] = v;
-	end
+	-- for k,v in pairs(self.current_task_info) do --实际使用中可以去掉。
+	-- 	mydata[k] = v;
+	-- end
 
 	if nil ~= self.server then           --如果得到任务不成功，try几次
 		while 4 >= try_time do
@@ -165,30 +169,11 @@ function class_base_ms:get_task()
     
 	--得到服务器信息后处理--
 	if nil ~= task_info and false ~= task_info then--如果是有效数据
-		if task_info.Code == 101 then              --判断是否是正确的代码 
+		if task_info.code == 101 then              --判断是否是正确的代码 
 			--return self.analy_server_data(self,task_info) --注意这个地方，必须加self，因为不是 “：”调用。 by kobe
-			return self:analy_server_data(task_info)                                              --或者改成 self:analy_server_data(task_info)
-            --[[
-            if "string" ~= type(task_info.data.TaskPath) or "number" ~= type(task_info.data.TaskId) then
-                error_info("接收服务器代码错误 ");
-            end
-            local new_task_name   = strip_path(task_info.data.TaskPath);
-            local local_task_file = sl_fix_path .. new_task_name;
-            
-            if false == file_exists(local_task_file) then    --看本地是否存在
-                self.server:get_file(local_task_file, task_info.data.TaskPath); --下载脚本
-                mSleep(1000);
-            end
-            --self.run_task(new_task_name); --运行程序
-            self.current_task_info.ms_task_id = task_info.data.TaskId;
-            self.current_task_info.ms_task_name  = new_task_name;
-            self.current_task_info.ms_stg_id  = task_info.data.Strategy_ID;
-            --self.current_task_info.ms_task_d_name = 
-            --self.current_task_info.ms_task_d_id = 
-            return true;
-            --]]
+			return self:analy_server_data(task_info)  --或者改成 self:analy_server_data(task_info)
 		else
-			error_info("错误代码： " .. task_info.Code .. task_info.Message);
+			error_info("错误代码： " .. task_info.code .. task_info.message);
 		end
 	else
 		return false
