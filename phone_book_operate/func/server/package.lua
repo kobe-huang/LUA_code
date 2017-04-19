@@ -10,7 +10,8 @@ package_file_list = {
   "misc/ms_info.lua",
   "class/class_server.lua", 
   "class/class_ms.lua",
-  "func/server/server.lua"               
+  "func/server/server.lua",
+  --"func/server/user_login.lua", --用户登录界面               
 }
 
 dofile("../../lib/lib_file_operate.lua")  --添加文件操作

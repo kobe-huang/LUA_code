@@ -34,11 +34,10 @@ function init_sys()
     return true;
 end
 
-notifyMessage( "开始执行服务器脚本");	--会延迟1s
-mSleep(1200);
-
-function main()
+function sl_main()
 	--assert(false, "sdsdiahiuu")
+	notifyMessage( "开始执行服务器任务");	--会延迟1s
+	mSleep(1200);
 	if true ~= init_sys() then
 		error_info("初始化错误！");
 		mSleep(5000);
@@ -56,3 +55,5 @@ function main()
 		end
 	end
 end
+
+sl_main();

@@ -12,7 +12,7 @@ class_base_ms = {
 		,ms_type = "ip4"   -- ip4,ip4s,ip5,ip5c,ip5s,ip6.ip6s
 	    ,ms_act = "kobe"
 	    ,ms_pwd = "H11111111h"
-	    ,ms_token = "shunliantianxia12345"
+	    ,ms_token = "shlnliantianxia12345"
 	},
     current_task_info = {
 		ms_stg_id    = 40000  --策略ID

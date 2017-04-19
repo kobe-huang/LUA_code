@@ -136,6 +136,12 @@ function isStringInFile(mystring, file)
     return false;
  end   
 
+--清除文件内容--
+function clean_file(file)
+    local f = io.open(file, 'w+');
+    f:close();
+end
+
 --写字串到到文件中--
 function writeStrToFile(mystring, file)
     local f = io.open(file, 'a');
