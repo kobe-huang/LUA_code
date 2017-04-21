@@ -34,6 +34,12 @@ function init_sys()
     return true;
 end
 
+sl_track = {};
+function init_track()
+    sl_track = class_track:new(default_class_track);
+    sl_track:init();
+end
+
 function sl_main()
 	--assert(false, "sdsdiahiuu")
 	notifyMessage( "开始执行服务器任务");	--会延迟1s
@@ -45,6 +51,8 @@ function sl_main()
 	end
 	
 	local my_result = false
+	init_track(); --初始化记录工具
+	
 	while true do 
 		--sl_ms
 		if true == sl_ms:get_task() then
@@ -57,3 +65,31 @@ function sl_main()
 end
 
 sl_main();
+
+----------给其他程序的接口----
+function track_write_record_item(item, value)
+    sl_track:write_record_item(item, value);
+end
+
+function track_read_record_item(item)
+    sl_track:read_record_item(item);
+end
+
+function track_clean_records()
+    sl_track:clean_records();
+end
+
+--发送埋点信息--
+function send_track_info()
+	sl_ms:send_info(sl_track.records_table);
+end
+
+
+---复位设备--
+function reset_ms_server()
+	-- body
+	reset_table = {
+		ms_reset = "true"
+	}
+	sl_ms:send_info(reset_table);
+end

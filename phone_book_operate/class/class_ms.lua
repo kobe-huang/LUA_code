@@ -180,7 +180,30 @@ function class_base_ms:get_task()
 	end
 end
 
+--给服务器发送指令，请求重置设备任务
+function class_base_ms:reset_server_task_list()
+end  	
+
+--给服务器发送统计信息
+function class_base_ms:send_statistic_info()
+	-- body
+end
+
 --打印输出,带ms标签的log--
 function class_base_ms:log()  
 	print("log");
 end
+
+
+function class_base_ms:send_info(records_table)  
+    local task_info = nil;
+	local mydata = {};
+	local try_time = 1; --接收数据超时的次数
+	for k,v in pairs(self.base_info) do
+        mydata[k] = v;
+	end
+	for k,v in pairs(records_table) do
+		mydata[k] = v;
+	end
+ 	self.server:send_info(mydata); --发送消息给服务器
+ end

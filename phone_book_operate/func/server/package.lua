@@ -10,6 +10,7 @@ package_file_list = {
   "misc/ms_info.lua",
   "class/class_server.lua", 
   "class/class_ms.lua",
+  "class/class_track.lua",
   "func/server/server.lua",
   --"func/server/user_login.lua", --用户登录界面               
 }
