@@ -11,6 +11,7 @@ package_file_list = {
   "class/class_server.lua", 
   "class/class_ms.lua",
   "class/class_track.lua",
+  "class/class_nv.lua",
   "func/server/server.lua",
   --"func/server/user_login.lua", --用户登录界面               
 }

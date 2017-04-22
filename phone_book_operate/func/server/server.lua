@@ -40,6 +40,14 @@ function init_track()
     sl_track:init();
 end
 
+
+sl_nv = {};
+function init_nv()
+    sl_nv = class_nv:new(default_class_nv);
+    sl_nv:init();
+end
+
+
 function sl_main()
 	--assert(false, "sdsdiahiuu")
 	notifyMessage( "开始执行服务器任务");	--会延迟1s
@@ -52,7 +60,8 @@ function sl_main()
 	
 	local my_result = false
 	init_track(); --初始化记录工具
-	
+	init_nv();
+
 	while true do 
 		--sl_ms
 		if true == sl_ms:get_task() then
@@ -66,7 +75,7 @@ end
 
 sl_main();
 
-----------给其他程序的接口----
+--------------埋点接口---------------------
 function track_write_record_item(item, value)
     sl_track:write_record_item(item, value);
 end
@@ -85,11 +94,24 @@ function send_track_info()
 end
 
 
----复位设备--
+-------------复位设备--------------
 function reset_ms_server()
 	-- body
 	reset_table = {
 		ms_reset = "true"
 	}
 	sl_ms:send_info(reset_table);
+end
+
+------------nv 接口-------------
+function nv_write_nv_item(item, value)
+    sl_nv:write_nv_item(item, value);
+end
+
+function nv_read_nv_item(item)
+   return sl_nv:read_nv_item(item);
+end
+
+function nv_clean_nvs()
+    sl_nv:clean_nvs();
 end
