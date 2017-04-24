@@ -2,7 +2,6 @@
 --从服务器得到的数据(格式)--
 
 --API：
-default_server_addr =  "http://120.77.34.177/sl_base/addons/xsy_resource/gettask.memcache.php?task="
 
 --默认的参数
 default_class_track= {

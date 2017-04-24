@@ -70,6 +70,16 @@ function boot_writeStrToFile(mystring, file)
     f:close();
 end
 
+function check_download_main_file(path)
+	-- body
+	--oss下载错误会有NoSuchKey， nginx下载错误会有"404"
+	if false == boot_isStringInFile("NoSuchKey", path)  and  false == boot_isStringInFile("404 Not Found", path)  then
+		return true;
+	else
+		return false;
+	end
+end
+
 --从服务器上下载主程序
 function get_main_file(local_path,sl_url) 
     local try_time = 1
@@ -77,7 +87,7 @@ function get_main_file(local_path,sl_url)
         os.execute("curl -o " .. local_path .." " .. sl_url);
         mSleep(1000*try_time);  --时间逐步加长
         if true == boot_file_exists(local_path) then --只看是否下载下来
-        	if false == boot_isStringInFile("<Error>", local_path) then	
+        	if true == check_download_main_file(local_path) then	
             	return true;
             else
             	try_time = try_time + 1;
@@ -151,3 +161,16 @@ function main()
 	get_main_and_run();
 end
 
+-- function main()
+-- 	-- body
+-- 	test_get_main_file();
+-- end
+
+-- function test_get_main_file()
+-- 	local x = 1
+-- 	local l_local_path = "/private/var/touchelf/scripts/test.lua" 
+-- 	local l_sl_url = "http://lua-script.oss-cn-shenzhen.aliyuncs.com/test.lua"
+-- 	--local l_sl_url = "http://120.77.34.177/sl_base/data/test.lua"
+-- 	local result = get_main_file(l_local_path, l_sl_url);
+-- 	notifyMessage('result = ' .. result ) ;
+-- end

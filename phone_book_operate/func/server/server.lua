@@ -81,7 +81,7 @@ function track_write_record_item(item, value)
 end
 
 function track_read_record_item(item)
-    sl_track:read_record_item(item);
+    return sl_track:read_record_item(item);
 end
 
 function track_clean_records()
@@ -92,7 +92,6 @@ end
 function send_track_info()
 	sl_ms:send_info(sl_track.records_table);
 end
-
 
 -------------复位设备--------------
 function reset_ms_server()
@@ -115,3 +114,46 @@ end
 function nv_clean_nvs()
     sl_nv:clean_nvs();
 end
+
+
+-----------------------------------------接口测试-------------------------
+-- function main()
+-- 	-- body
+-- 	--assert(false, "sdsdiahiuu")
+-- 	notifyMessage( "开始执行服务器任务");	--会延迟1s
+-- 	mSleep(1200);
+
+
+-- 	if true ~= init_sys() then
+-- 		error_info("初始化错误！");
+-- 		mSleep(5000);
+--         os.exit(1);
+-- 	end
+	
+-- 	local my_result = false
+-- 	init_track(); --初始化记录工具
+-- 	init_nv();
+
+-- 	while true do 
+-- 		--sl_ms
+-- 		if true == sl_ms:get_task() then
+-- 			sl_ms:run_task();
+-- 			test_nv_track_reset();
+-- 			mSleep(100);
+-- 		else
+-- 			error_info("运行脚本错误！");
+-- 		end
+-- 	end
+-- end
+
+-- my_index = 0;
+-- function test_nv_track_reset()
+-- 	if my_index <= 8 then
+-- 		track_write_record_item('index_'..my_index,  my_index);
+-- 		nv_write_nv_item('nv_index_'..my_index, my_index);
+-- 	else
+-- 		reset_ms_server();
+-- 		nv_write_nv_item('nv_reset'..my_index, my_index);
+-- 		my_index = 0;
+-- 	end
+-- end
