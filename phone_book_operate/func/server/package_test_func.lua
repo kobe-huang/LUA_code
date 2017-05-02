@@ -13,7 +13,8 @@ package_file_list = {
   "class/class_track.lua",
   "class/class_nv.lua",
   "lib/lib_sl_api.lua",
-  "class/class_app_base.lua",      
+  "class/class_app_base.lua",
+  "class/app/class_app_weixin.lua",       
 }
 
 dofile("../../lib/lib_file_operate.lua")  --添加文件操作

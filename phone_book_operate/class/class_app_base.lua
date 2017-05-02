@@ -51,8 +51,10 @@ function class_base_app:new(o)
     self.app_nv.local_nv_path = self.app_nv_path;
     self.app_nv:init();
    
-    ----
-    self.app_info = self.app_nv:read_nv_item(self.app_nv_name); --初始化nv项目
+    local tmp_nv = self.app_nv:read_nv_item(self.app_nv_name); --初始化nv项目
+    if nil ~= tmp_nv and type(tmp_nv) == 'table' then
+        self.app_info = tmp_nv;
+    end
     return o    --最后返回构造后的对象实例
 end
 
@@ -61,9 +63,19 @@ function class_base_app:get_app_name()
     return self.app_name;
 end
 
---step-用户相关--
+
+
+--用户相关--
+
+--进入用户帐号界面--
+function class_base_app:enter_account_page()
+    -- body
+end
+
 --初始化用户--
-function class_base_app:init_user()        
+function class_base_app:init_user()  
+    --在用户中心界面，去读取用户名的特征值 
+    self:enter_account_page();     
     local user_key_info = get_pic_key_info(self.app_user_key_point.point_x, self.app_user_key_point.point_y);
     local is_find_user = false;
     local my_index = 1;
@@ -91,7 +103,7 @@ function class_base_app:init_user()
         self:update_to_nv(); --写入nv文件中
     end
 
-    print("class_base_app:check_app");
+    --print("class_base_app:check_app");
     --print(self.app_name)
     return true;
 end
@@ -99,7 +111,7 @@ end
 --更新用户信息到nv--
 function class_base_app:update_to_nv()  
     self.app_nv:write_nv_item(self.app_nv_name, self.app_info);
-    print("class_base_app:check_app");
+    --print("class_base_app:check_app");
     --print(self.app_name)
     return true;
 end
@@ -168,13 +180,13 @@ function test_class_app_base( ... )
     my_app:update_to_nv();
 
     my_app:do_func("default_func");
-    my_app:do_func_finish("default_func");
+    my_app:finish_func("default_func");
 
 end
 
-function main( ... )
-    -- body
-    test_class_app_base();
-end
+-- function main( ... )
+--     -- body
+--     test_class_app_base();
+-- end
 
 --class_app_base.lua end--
