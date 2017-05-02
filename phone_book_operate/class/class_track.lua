@@ -33,6 +33,10 @@ function class_track:init()
         self.records_table = { 
             ms_track = "true"
         };
+        wirtjson =(self.JSON):encode(self.records_table)--转换成json格式
+        local test = assert(io.open(self.local_track_path, "w"))
+        test:write(wirtjson)
+        test:close()
     else
         local test      = io.open(self.local_track_path, "r");
         local readjson  = test:read("*a");

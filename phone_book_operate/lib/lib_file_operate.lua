@@ -98,11 +98,12 @@ function file_exists(path)
   return file ~= nil
 end
 
+
 --将二进制的文件转换成--
 function fileToHexString(file)  
         local file = io.open(file, 'rb');
         local data = file:read("*all");
-        notifyMessage( type(data) )
+        log_info( type(data) )
         file:close();
         local t = {};
         for i = 1, string.len(data),1 do
@@ -111,6 +112,7 @@ function fileToHexString(file)
         end
         return table.concat(t, "");
 end
+
 
 --在文件（文本文件）中，找特定的字串--
 function isStringInFile(mystring, file) 
@@ -149,6 +151,30 @@ function writeStrToFile(mystring, file)
     f:close();
 end
 
+----------------------------------------------------------------截图操作-------------------------------------
+----保存截图到文件中---
+function save_card_info(file_name, x, y, xx, yy, mystring,file_name1) --保存联系人信息--
+    snapshotRegion(file_name, x, y, xx, yy); -- 将区域[(100,100)(200,200)]的截图保存到路径为/mnt/sdcard/a.bmp的图片中, 格式为BMP
+    writeStrToFile(mystring,file_name1)
+end
+
+--得到屏幕中的关键信息--
+function get_pic_key_info(x, y) --得到屏幕中的关键信息--
+    local file_name = "/private/var/touchelf/scripts/sl/temp_XXXX.bmp"
+    snapshotRegion(file_name, x, y, x+80, y); 
+    return fileToHexString(file_name);
+end
+
+---检查是否有重复的信息---
+function check_card_is_repeated(contact_index_file, x, y)  --检查是否是重复的联系人  文件和查找的点---
+    local card_info = get_pic_key_info(x, y);
+    if true ==  isStringInFile(card_info, contact_index_file) then
+        return true;
+    else
+        return card_info;
+    end    
+end
+--
 
 --------------------------------------------------------------log----------------------------------------
 --初始化log文件

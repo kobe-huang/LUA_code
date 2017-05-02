@@ -1,6 +1,6 @@
 --用来将文件打包 package--
 
- func_name = "server" --功能的名称 
+ func_name = "test_func" --功能的名称 
  __FILE__ = debug.getinfo(1,'S').source:sub(2) --当前的文件全路径
 
 package_file_list = {
@@ -13,7 +13,7 @@ package_file_list = {
   "class/class_track.lua",
   "class/class_nv.lua",
   "lib/lib_sl_api.lua",
-  "func/server/server.lua",          
+  "class/class_app_base.lua",      
 }
 
 dofile("../../lib/lib_file_operate.lua")  --添加文件操作

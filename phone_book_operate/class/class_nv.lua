@@ -11,7 +11,13 @@ default_class_nv= {
 };
 
 
-class_nv = {};
+class_nv = {    
+        local_nv_path  = "/private/var/touchelf/scripts/sl/sl_default_nv.txt", --配置文件,
+        nvs_table = {
+            ms_nv = "true",
+         }     
+     };
+
 --新建一个服务器--
 function class_nv:new(o)
     o = o or {} --如果参数中没有提供table，则创建一个空的。
@@ -27,10 +33,15 @@ function class_nv:init()
     if false == file_exists(file_path) then  --创建自己的临时文件夹
           os.execute("mkdir -p " .. file_path);
     end
+
     if false == file_exists(self.local_nv_path) then
         self.nvs_table = { 
             ms_nv = "true"
         };
+        wirtjson = (self.JSON):encode(self.nvs_table)--转换成json格式     
+        local test = assert(io.open(self.local_nv_path, "w"))
+        test:write(wirtjson)
+        test:close();
     else
         local test      = io.open(self.local_nv_path, "r");
         local readjson  = test:read("*a");
