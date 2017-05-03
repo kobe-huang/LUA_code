@@ -48,16 +48,68 @@ function class_base_page:get_page_name()  --得到这个页面的名字
 end
 --
 
-function class_base_page:error_handle()  --在这个页面的错误处理
+function class_base_page:error_handling()  --在这个页面的错误处理
     -- body
-    if self.page_error_code == 101 then    --默认错误处理，按返回键
-        keyDown('HOME');    --HOME键按下
-        mSleep(100);        --延时100毫秒
-        keyUp('HOME');      --HOME键抬起
-        mSleep(3000);
-        warning_info(self:get_page_name());
+    if self.page_error_code == 101  then    --默认错误处理，
+        mSleep(2000)
+        error_info(self:get_page_name());
+        mSleep(5000)
+        tongzhi()
+        local current_page = get_current_page(); --得到当前的page
+        if false ~= current_page then 
+            page_array[current_page]:enter(); --直接进当前页面的处理
+        else
+            rotateScreen(0);
+            mSleep(637);
+            keyDown('HOME');
+            mSleep(141);
+            keyUp('HOME');
+
+            mSleep(159);
+            keyDown('HOME');
+            mSleep(64);
+            keyUp('HOME');
+
+            mSleep(1025);
+            touchDown(3, 62, 534)
+            mSleep(8);
+            touchMove(3, 66, 494)
+            mSleep(16);
+            touchMove(3, 72, 418)
+            mSleep(22);
+            touchMove(3, 94, 322)
+            mSleep(13);
+            touchMove(3, 128, 196)
+            mSleep(14);
+            touchMove(3, 176, 56)
+            mSleep(19);
+            touchUp(3)
+
+            mSleep(1167);
+            touchDown(5, 302, 614)
+            mSleep(9);
+            touchMove(5, 302, 578)
+            mSleep(20);
+            touchMove(5, 304, 508)
+            mSleep(19);
+            touchMove(5, 306, 406)
+            mSleep(16);
+            touchMove(5, 312, 296)
+            mSleep(14);
+            touchMove(5, 326, 164)
+            mSleep(15);
+            touchMove(5, 346, 38)
+            mSleep(15);
+            touchUp(5)
+            mSleep(1917);
+            keyDown('HOME');
+            mSleep(176);
+            keyUp('HOME');
+            mSleep(2000);
+            error_info(self:get_page_name());
+            return false
+        end
     end
 end
-
 --function sl_init_page
 --class_base_page.lua end--
