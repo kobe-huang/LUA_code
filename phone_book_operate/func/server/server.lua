@@ -5,7 +5,8 @@ sl: shunlian
 ]]--
 --下载的脚本放在的地方
 
------------------------------------------------------------------------------主程序-----------
+-----------------------------------------------------------------------------主程序----------
+sl_main_version = "20170503"  --版本号--
 sl_ms = {}; --当前手机对象
 function init_ms()
 	o = {};
@@ -62,33 +63,11 @@ end
 sl_main();
 
 -----------------------------------------接口测试-------------------------
--- function main()
+-- g_sl_account 	= "kobe";
+-- g_sl_password 	= "H11111111h"
+-- function main( ... )
+-- 	sl_main();
 -- 	-- body
--- 	--assert(false, "sdsdiahiuu")
--- 	notifyMessage( "开始执行服务器任务");	--会延迟1s
--- 	mSleep(1200);
-
-
--- 	if true ~= init_sys() then
--- 		error_info("初始化错误！");
--- 		mSleep(5000);
---         os.exit(1);
--- 	end
-	
--- 	local my_result = false
--- 	init_track(); --初始化记录工具
--- 	init_nv();
-
--- 	while true do 
--- 		--sl_ms
--- 		if true == sl_ms:get_task() then
--- 			sl_ms:run_task();
--- 			test_nv_track_reset();
--- 			mSleep(100);
--- 		else
--- 			error_info("运行脚本错误！");
--- 		end
--- 	end
 -- end
 
 -- my_index = 0;

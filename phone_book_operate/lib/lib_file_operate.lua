@@ -246,3 +246,38 @@ function warning_info(out_info)  ---错误处理函数
 end
 
 --end lib_file_log.lua
+
+--检查下载文件--
+function check_download_file(path)
+    -- body
+    --oss下载错误会有NoSuchKey， nginx下载错误会有"404"
+    if false == isStringInFile("NoSuchKey", path)  and  false == isStringInFile("404 Not Found", path)  then
+        return true;
+    else
+        return false;
+    end
+end
+
+--从服务器上下载文件
+function download_remote_file(local_path,sl_url) 
+    local local_path_path = strip_file_name(local_path);
+    if false == file_exists(local_path_path) then  --创建自己的临时文件夹
+        os.execute("mkdir -p " .. local_path_path);
+    end
+
+    local try_time = 1
+    while 3 >= try_time do
+        os.execute("curl -o " .. local_path .." " .. sl_url);
+        mSleep(1000*try_time);  --时间逐步加长
+        if true == file_exists(local_path) then --只看是否下载下来
+            if true == check_download_file(local_path) then    
+                return true;
+            else
+                try_time = try_time + 1;
+            end
+        else
+            try_time = try_time + 1;
+        end
+    end
+    return false; 
+end

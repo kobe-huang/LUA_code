@@ -82,7 +82,8 @@ function class_base_server:get_file(local_path,sl_url)
         os.execute("curl -o " .. local_path .." " .. sl_url)
         mSleep(1000*try_time);  --时间逐步加长
         if true == file_exists(local_path) then --只看是否下载下来
-            if false == isStringInFile("<Error>", local_path) then 
+            --if false == isStringInFile("<Error>", local_path) then
+            if true == check_download_file(local_path) then 
                 return true;
             else
                 try_time = try_time + 1;

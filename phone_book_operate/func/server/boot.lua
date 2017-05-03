@@ -12,6 +12,7 @@ g_main_name_list = {
 };
 
 --http://lua-script.oss-cn-shenzhen.aliyuncs.com/sl_main.lua.E2
+boot_code_version = "20170503";
 
 sl_user_login_file =  "/private/var/touchelf/scripts/sl/user_info.lua"  --放着用户的登录信息   
 --sl_error_time     = 1;  --容错处理,  现在不做容错处理。
