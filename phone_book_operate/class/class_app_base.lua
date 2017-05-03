@@ -17,7 +17,7 @@ app_nv_prefix_name          = "_app_nv"
 default_app_user = {
     user_name       = "default_account",  -- 用户名称
     user_snap_info  = "12212121212121",   --用户特征信息
-    user_data       = {},                  --用户在这个设备上的信息
+    user_data       = {},                 --用户在这个设备上的信息
 };
 
 --base APP信息

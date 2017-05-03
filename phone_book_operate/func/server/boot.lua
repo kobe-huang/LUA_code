@@ -131,6 +131,7 @@ if false == boot_file_exists(user_login_file_path) then  --创建自己的临时
 end
 
 UI = {
+        { 'TextView{-版本-20170503-}' },
         { 'TextView{-请输入你的账号密码-}' },
         { 'InputBox{'..g_sl_account..'}',    'current_account',    '账号:' },
         { 'InputBox{'..g_sl_password..'}',   'current_pwd',    '密码:' },
@@ -140,13 +141,15 @@ function set_user_info()
 	if g_sl_account == current_account and g_sl_password == current_pwd then 
 	    --notifyMessage("账号密码");  
 	else
-	    g_sl_account    = current_account;
-	    g_sl_password   = current_pwd;
-	    boot_clean_file(sl_user_login_file);
-	    boot_writeStrToFile("g_sl_account = " .. "'" .. g_sl_account.. "'", sl_user_login_file);
-	    boot_writeStrToFile("g_sl_password = " .."'" ..g_sl_password.. "'", sl_user_login_file);
-	    notifyMessage("设置新的账号密码");
-	    mSleep(1000);
+        if nil ~= current_account and nil ~= current_pwd then --如果是重启，则current_xx为空
+    	    g_sl_account    = current_account;
+    	    g_sl_password   = current_pwd;
+    	    boot_clean_file(sl_user_login_file);
+    	    boot_writeStrToFile("g_sl_account = " .. "'" .. g_sl_account.. "'", sl_user_login_file);
+    	    boot_writeStrToFile("g_sl_password = " .."'" ..g_sl_password.. "'", sl_user_login_file);
+    	    notifyMessage("设置新的账号密码");
+    	    mSleep(1000);
+        end
 	end
     if g_sl_account ==  "kobe_test" and g_sl_password == "H11111111h" then
 		notifyMessage("请更换默认用户和密码");
