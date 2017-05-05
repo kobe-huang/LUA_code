@@ -141,7 +141,9 @@ function class_base_app:finish_func(func_name, in_para)
     for k,v in ipairs(self.app_ctrl_func_list) do
       if v == func_name then
          local func_name = 'func_' .. func_name .. '_finish';
-         return self[func_name](self,in_para);
+         local tmp_return = self[func_name](self,in_para);
+         self:update_to_nv();
+         return tmp_return;
       end
     end
     return false; 

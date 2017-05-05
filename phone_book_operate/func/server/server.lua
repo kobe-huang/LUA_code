@@ -63,9 +63,17 @@ end
 sl_main();
 
 -----------------------------------------接口测试-------------------------
+--测试：
+--1. 清除手机中的脚本，及一切缓存数据; 
+--2. 注释掉上面的sl_main
+--3. 设置下面的 account 和 password
+--4. 打开下面main函数
+
+
 -- g_sl_account 	= "kobe";
 -- g_sl_password 	= "H11111111h"
 -- function main( ... )
+-- 	os.execute("rm -rf /private/var/touchelf/scripts/sl"); --1. 清除手机中的脚本，及一切缓存数据;
 -- 	sl_main();
 -- 	-- body
 -- end

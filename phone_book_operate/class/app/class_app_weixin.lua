@@ -73,9 +73,9 @@ function weixin_app_class:func_wx_add_contact_by_phone_book_link( ... )
     -- body
     print("weixin_app_class:func_wx_add_contact_by_phone_book_link");
 end
-function weixin_app_class:func_wx_add_contact_by_phone_book_link_finish()
+function weixin_app_class:func_wx_add_contact_by_phone_book_link_finish(in_para)
     -- body
-    self.app_info.user_list[self.app_info.current_user_index].user_name = "huangyinke";
+    self.app_info.user_list[self.app_info.current_user_index].user_name = in_para;
     self:update_to_nv();
     print("weixin_app_class:func_wx_add_contact_by_phone_book_link_finish");
 end
@@ -94,7 +94,7 @@ function test_wx_app( ... )
     my_wx_app = weixin_app_class:new();
     my_wx_app:init_user();
     my_wx_app:do_func("wx_add_contact_by_phone_book_link");
-    my_wx_app:finish_func("wx_add_contact_by_phone_book_link");
+    my_wx_app:finish_func("wx_add_contact_by_phone_book_link",  "huangyinke---");
 
 end
 

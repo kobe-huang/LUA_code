@@ -165,6 +165,8 @@ function main()
 	get_main_and_run();
 end
 
+
+---------------------------test----------------------------------------------------------
 -- function main()
 -- 	-- body
 -- 	test_get_main_file();
