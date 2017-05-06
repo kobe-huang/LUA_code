@@ -6,7 +6,7 @@ sl: shunlian
 --下载的脚本放在的地方
 
 -----------------------------------------------------------------------------主程序----------
-sl_main_version = "20170503"  --版本号--
+
 sl_ms = {}; --当前手机对象
 function init_ms()
 	o = {};
@@ -35,16 +35,44 @@ function init_sys()
     return true;
 end
 
+--boot 文件处理,同步boot文件 
+function sync_boot_file( ... )
+	-- body
+	local tmp_return;
+	
+	if nil == sl_remote_boot_file or "string" ~= type(sl_remote_boot_file) then
+		return false;
+	end
+	if nil == sl_boot_file_name or "string" ~= type(sl_boot_file_name) then
+		return false;
+	end
+	if nil == sl_root_dir or "string" ~= type(sl_root_dir) then
+		return false;
+	end
+
+	if boot_code_version == nil  or boot_code_version ~= sl_boot_version then
+		local local_path = sl_root_dir .. "boot.lua.E2";
+		local new_boot_path = sl_root_dir .. sl_boot_file_name;
+		if false == download_remote_file(local_path, sl_remote_boot_file) then
+			return false;
+		end
+		os.execute("mv " .. local_path .. " " .. new_boot_path);
+		return true;
+	end
+end
+
+
 function sl_main()
 	--assert(false, "sdsdiahiuu")
-	notifyMessage( "开始执行服务器任务");	--会延迟1s
-	mSleep(1200);
+	--打印出 服务器版本号和 对应的boot版本号
+	notifyMessage( "服务器版本: " .. sl_main_version .. "&" .. sl_boot_version);	--会延迟1s
+	mSleep(2000);
 	if true ~= init_sys() then
 		error_info("初始化错误！");
 		mSleep(5000);
         os.exit(1);
 	end
-	
+	sync_boot_file(); --同步服务器boot
 	local my_result = false
 	init_track(); --初始化记录工具
 	init_nv();

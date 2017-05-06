@@ -251,6 +251,10 @@ end
 function check_download_file(path)
     -- body
     --oss下载错误会有NoSuchKey， nginx下载错误会有"404"
+    if true == isStringInFile("isStringInFile", path) then
+        return true;
+    end
+
     if false == isStringInFile("NoSuchKey", path)  and  false == isStringInFile("404 Not Found", path)  then
         return true;
     else
