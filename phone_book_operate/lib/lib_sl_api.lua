@@ -1,3 +1,15 @@
+----临时变量---
+sl_reg_table = {};
+function set_tmp_var_item( item_name, value )
+    -- body
+    sl_reg_table[item_name] = value;
+end
+function get_tmp_var_item( item_name )
+    -- body
+    return sl_reg_table[item_name];
+end
+
+--------
 sl_track = {};
 function init_track()
     sl_track = class_track:new(default_class_track);

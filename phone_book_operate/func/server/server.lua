@@ -61,7 +61,6 @@ function sync_boot_file( ... )
 	end
 end
 
-
 function sl_main()
 	--assert(false, "sdsdiahiuu")
 	--打印出 服务器版本号和 对应的boot版本号

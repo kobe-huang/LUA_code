@@ -10,5 +10,3 @@ sl_boot_version 	= "20170503" --sl_main对应的版本号，用来升级boot用
 sl_root_dir 		= "/private/var/touchelf/scripts/"  --根目录
 sl_boot_file_name 	= "666666.lua.E2"
 sl_remote_boot_file = "http://lua-script.oss-cn-shenzhen.aliyuncs.com/boot.lua.E2" --远程的地址
-
-

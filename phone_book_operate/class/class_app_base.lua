@@ -75,6 +75,14 @@ end
 --初始化用户--
 function class_base_app:init_user()  
     --在用户中心界面，去读取用户名的特征值 
+    local app_user_key_name = self.app_name .. "_user_index"
+    local tmp_user_index = get_tmp_var_item(app_user_key_name);
+    --判断系统中是否已经判断过用户，防止二次进入
+    if nil ~= tmp_user_index and type(tmp_user_index) == "number" then
+         self.app_info.current_user_index = tmp_user_index;
+         return true;
+    end
+
     self:enter_account_page();     
     local user_key_info = get_pic_key_info(self.app_user_key_point.point_x, self.app_user_key_point.point_y);
     local is_find_user = false;
@@ -105,6 +113,8 @@ function class_base_app:init_user()
 
     --print("class_base_app:check_app");
     --print(self.app_name)
+    --设置系统已经判断过用户
+    set_tmp_var_item(app_user_key_name, self.app_info.current_user_index);
     return true;
 end
 
