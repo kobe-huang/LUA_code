@@ -13,7 +13,6 @@ local_app_info_path         = "/private/var/touchelf/scripts/sl/" --配置文件
 local_app_info_prefix_name  = "_app_nv.txt"
 app_nv_prefix_name          = "_app_nv"
 
-
 default_app_user = {
     user_name       = "default_account",  -- 用户名称
     user_snap_info  = "12212121212121",   --用户特征信息
@@ -195,6 +194,7 @@ function test_class_app_base( ... )
     my_app:finish_func("default_func");
 
 end
+
 
 -- function main( ... )
 --     -- body

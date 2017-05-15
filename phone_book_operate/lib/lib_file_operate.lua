@@ -90,13 +90,46 @@ end
 
 -----------------------------------------------------------
 
- 
 --判断文件是否存在
 function file_exists(path)
   local file = io.open(path, "rb")
   if file then file:close() end
   return file ~= nil
 end
+
+--清除文件内容--
+function clean_file(file)
+    local f = io.open(file, 'w+');
+    f:close();
+end
+
+--写字串到到文件中--
+function writeStrToFile(mystring, file)
+    local f = io.open(file, 'a');
+    f:write(mystring .. "\r\n");
+    f:close();
+end
+
+function file_config_2_table(path, table_name)
+      local file = io.open(path, "r");
+      assert(file);
+      local data = file:read("*a"); -- 读取所有内容
+      file:close();
+      file = io.open("path", "w");
+      assert(file);
+      data = table_name .. " = { \r\n" .. data .."\r\n }"
+      file:write(data);
+      file:close();
+end
+
+-- function test_file_config_2_table( ... )
+--     -- body
+--     local path = "d:\\in.lua";
+--     local table_name = "__U";
+--     file_config_2_table(path, table_name);
+-- end
+
+-- test_file_config_2_table();
 
 
 --将二进制的文件转换成--
@@ -138,18 +171,7 @@ function isStringInFile(mystring, file)
     return false;
  end   
 
---清除文件内容--
-function clean_file(file)
-    local f = io.open(file, 'w+');
-    f:close();
-end
 
---写字串到到文件中--
-function writeStrToFile(mystring, file)
-    local f = io.open(file, 'a');
-    f:write(mystring .. "\r\n");
-    f:close();
-end
 
 ----------------------------------------------------------------截图操作-------------------------------------
 ----保存截图到文件中---

@@ -103,10 +103,26 @@ end
 --     sl_ms:send_info(sl_nv.nvs_table);
 -- end
 
--- function test_nv( ... )
---     init_nv();
---     nv_write_nv_item('huang', 'yinle');
---     local aaa = nv_read_nv_item('huang');
---     notifyMessage('aaa = ' .. aaa);
---     -- body
+function test_nv( ... )
+    init_nv();
+    nv_write_nv_item('huang', 'yinle');
+
+    local item_table = "xxxxx";
+    local item_table_value = {
+    "sdsds",
+    "121212",
+    "wewew",
+    "eeeeeee"
+    }
+    nv_write_nv_item(item_table ,item_table_value );
+
+    local aaa = nv_read_nv_item('huang');
+    local xxxxx = nv_read_nv_item(item_table);
+    
+    notifyMessage('aaa = ' .. aaa);
+    -- body
+end
+
+-- function main()
+--     test_nv();
 -- end

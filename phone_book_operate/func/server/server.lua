@@ -75,6 +75,7 @@ function sl_main()
 	local my_result = false
 	init_track(); --初始化记录工具
 	init_nv();
+	--test_nv();
 
 	while true do 
 		--sl_ms
