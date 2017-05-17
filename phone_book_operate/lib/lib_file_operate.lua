@@ -272,13 +272,17 @@ end
 --检查下载文件--
 function check_download_file(path)
     -- body
-    --oss下载错误会有NoSuchKey， nginx下载错误会有"404"
+    --oss下载错误会有NoSuchKey， nginx下载错误会有"404", 还有“302 Found”
     if true == isStringInFile("isStringInFile", path) then
         return true;
     end
 
     if false == isStringInFile("NoSuchKey", path)  and  false == isStringInFile("404 Not Found", path)  then
-        return true;
+        if false == boot_isStringInFile("302 Found", path) then
+            return true;
+        else
+            return false;
+        end
     else
         return false;
     end

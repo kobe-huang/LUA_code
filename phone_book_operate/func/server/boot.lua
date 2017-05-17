@@ -12,7 +12,7 @@ g_main_name_list = {
 };
 
 --http://lua-script.oss-cn-shenzhen.aliyuncs.com/sl_main.lua.E2
-boot_code_version = "20170503";
+boot_code_version = "20170517";
 
 sl_user_login_file =  "/private/var/touchelf/scripts/sl/user_info.lua"  --放着用户的登录信息   
 --sl_error_time     = 1;  --容错处理,  现在不做容错处理。
@@ -75,7 +75,11 @@ function check_download_main_file(path)
 	-- body
 	--oss下载错误会有NoSuchKey， nginx下载错误会有"404"
 	if false == boot_isStringInFile("NoSuchKey", path)  and  false == boot_isStringInFile("404 Not Found", path)  then
-		return true;
+		if false == boot_isStringInFile("302 Found", path) then
+            return true;
+        else
+            return false;
+        end
 	else
 		return false;
 	end
