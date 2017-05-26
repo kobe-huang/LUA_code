@@ -19,7 +19,7 @@ base_return_info = {
 }
 --默认的参数
 class_base_server = {
-    server_addr = default_server_addr,
+    server_addr = sl_default_server_addr,
 } 
 
 
