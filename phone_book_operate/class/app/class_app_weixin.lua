@@ -68,7 +68,7 @@ end
 function weixin_app_class:func_default_func_finish( ... )
 end
 
-----------------------
+-----------------------
 function weixin_app_class:func_wx_add_contact_by_phone_book_link( ... )
     -- body
     print("weixin_app_class:func_wx_add_contact_by_phone_book_link");

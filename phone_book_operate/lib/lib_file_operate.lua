@@ -281,9 +281,11 @@ function check_download_file(path)
         if false == boot_isStringInFile("302 Found", path) then
             return true;
         else
+            os.execute("rm -f " .. path); --如果不匹配就直接删除
             return false;
         end
     else
+        os.execute("rm -f " .. path); --如果不匹配就直接删除
         return false;
     end
 end

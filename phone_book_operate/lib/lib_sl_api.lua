@@ -1,12 +1,12 @@
 ----临时变量---
-sl_reg_table = {};
-function set_tmp_var_item( item_name, value )
+sl_var_table = {};
+function set_var_item( item_name, value )
     -- body
-    sl_reg_table[item_name] = value;
+    sl_var_table[item_name] = value;
 end
-function get_tmp_var_item( item_name )
+function get_var_item( item_name )
     -- body
-    return sl_reg_table[item_name];
+    return sl_var_table[item_name];
 end
 
 --------

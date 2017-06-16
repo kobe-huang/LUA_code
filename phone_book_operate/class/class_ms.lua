@@ -22,7 +22,11 @@ class_base_ms = {
 	    , ms_task_data_id = 50000
 	    , ms_task_data_name = "test_task_date_0.lua"  --当前执行的任务
 	    , ms_user_config = "xxx.lua"  ---用户的数据
-	}
+	},
+	user_info = {
+		user_id 	= 0;
+		ms_index 	= 0;
+	},
 } 
 
 --初始化手机对象--
@@ -96,7 +100,12 @@ function class_base_ms:analy_server_data(task_info)
 	local new_user_config 	   = nil 
 	if "string" == type(task_info.data.user_config_path) then new_user_config =  strip_path(task_info.data.user_config_path) end
 	
-
+-----
+	self.user_info.user_id 	= task_info.data.user_id;
+	self.user_info.ms_index = task_info.data.ms_index;
+	set_var_item("var_user_id", task_info.data.user_id);
+	set_var_item("var_ms_index", task_info.data.ms_index);
+-----
 
 	local local_task_data_file = nil
     if nil ~= new_task_data_name then
@@ -123,13 +132,13 @@ function class_base_ms:analy_server_data(task_info)
 		--mSleep(1000);
 	end
 
-	self.current_task_info.ms_task_id    = task_info.data.task_id;
+	self.current_task_info.ms_task_id    	= task_info.data.task_id;
 	self.current_task_info.ms_task_data_id  = task_info.data.task_data_id; 
-	self.current_task_info.ms_stg_id     = task_info.data.strategy_id;
+	self.current_task_info.ms_stg_id     	= task_info.data.strategy_id;
 
-	self.current_task_info.ms_task_name   = new_task_name;	
-	self.current_task_info.ms_task_data_name = new_task_data_name; --task_info.data.TaskDataPath;
-	self.current_task_info.ms_user_config = new_user_config;
+	self.current_task_info.ms_task_name   		= new_task_name;	
+	self.current_task_info.ms_task_data_name 	= new_task_data_name; --task_info.data.TaskDataPath;
+	self.current_task_info.ms_user_config 		= new_user_config;
 
 	if "string" == type(task_info.data.token) then  --加上token，先要看是否有token
 		self.base_info.ms_token		  = task_info.data.token;

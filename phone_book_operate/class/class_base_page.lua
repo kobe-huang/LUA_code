@@ -52,9 +52,10 @@ function class_base_page:error_handling()  --在这个页面的错误处理
     -- body
     if self.page_error_code == 101  then    --默认错误处理，
         mSleep(2000)
-        error_info(self:get_page_name());
-        mSleep(5000)
-        tongzhi()
+        log_info(self:get_page_name());
+        mSleep(3000)
+        tongzhi()  --系统通知
+        qq_tongzhi()   --微信通知
         local current_page = get_current_page(); --得到当前的page
         if false ~= current_page then 
             page_array[current_page]:enter(); --直接进当前页面的处理
