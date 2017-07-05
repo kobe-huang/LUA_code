@@ -67,7 +67,7 @@ function sl_main()
 	notifyMessage( "服务器版本: " .. sl_main_version .. "&" .. sl_boot_version);	--会延迟1s
 	mSleep(2000);
 	if true ~= init_sys() then
-		error_info("初始化错误！");
+		warning_info("初始化错误！");
 		mSleep(5000);
         os.exit(1);
 	end
@@ -83,7 +83,8 @@ function sl_main()
 			sl_ms:run_task();
 			mSleep(100);
 		else
-			error_info("运行脚本错误！");
+			--error_info("运行脚本错误！");
+			mSleep(3000);
 		end
 	end
 end

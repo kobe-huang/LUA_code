@@ -236,19 +236,31 @@ function error_info_exit(out_info)  ---错误处理函数
     notifyMessage("致命错误：".. out_info);   
     mSleep(3000);
     --page_array["page_main"]:enter();  --重新开始
-    os.execute("reboot");
-    --os.exit(1);
+    --os.execute("reboot");
+    --如果错误太多就重启
+    local tmp_error_num_nv = nv_read_nv_item("sl_fatal_error_num"); --初始化nv项目
+    if nil ~= tmp_error_num_nv and type(tmp_error_num_nv) == 'number' then
+        if tmp_error_num_nv > 4 then
+             nv_write_nv_item("sl_fatal_error_num", 1);
+             os.execute("reboot");
+        else
+            nv_write_nv_item("sl_fatal_error_num", tmp_error_num_nv+1 );
+        end
+    else
+         nv_write_nv_item("sl_fatal_error_num", 1 );
+    end
+    os.exit(1);
 end
 
-error_time = 1;
+xxx_error_time = 1;
 function error_info(out_info)  ---错误处理函数   
     local time = get_local_time(); 
     writeStrToFile("error:  " .. time .. out_info , sl_log_file); 
     notifyMessage("错误：" .. out_info);
     mSleep(1200);
     if nil ~= sl_error_time then
-        error_time = error_time + 1;
-        if error_time >= sl_error_time then
+        xxx_error_time = xxx_error_time + 1;
+        if xxx_error_time >= sl_error_time then
             error_info_exit("错误次数太多");
         else
            -- page_array["page_main"]:enter();  --重新开始
@@ -257,6 +269,13 @@ function error_info(out_info)  ---错误处理函数
         os.exit(1);
     end
     --os.exit(1);
+end
+
+function test_error_info( ... )
+    -- body
+    for i=1,100 do
+        error_info("test_error_info");
+    end
 end
 
 --输出警告信息到文件

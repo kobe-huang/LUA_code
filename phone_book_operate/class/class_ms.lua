@@ -183,11 +183,16 @@ function class_base_ms:get_task()
 			return self:analy_server_data(task_info)  --或者改成 self:analy_server_data(task_info)
 		else
 			error_info("错误代码： " .. task_info.code .. task_info.message);
+			return false;
 		end
 	else
+		error_info("网络或服务器异常！休眠15分钟");
+		mSleep(1000*60*15);
+		--mSleep(1000*30);
 		return false
 	end
 end
+
 
 --给服务器发送指令，请求重置设备任务
 function class_base_ms:reset_server_task_list()
